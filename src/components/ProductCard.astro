@@ -1,7 +1,7 @@
 ---
 const { href, name, mainDesc, img, category } = Astro.props;
 ---
-<a href={href} class="product-card block rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-surface-2 hover:bg-surface-3" data-category={category}>
+<a href={href} class="product-card block h-[22rem] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-surface-2 hover:bg-surface-3" data-category={category}>
   {img && <img src={img} alt={name} class="w-full h-[14rem] object-cover" />}
   <div class="p-4">
     <h3 class="font-semibold text-on-surface text-lg mb-1">{name}</h3>

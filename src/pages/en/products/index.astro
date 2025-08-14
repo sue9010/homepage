@@ -43,7 +43,7 @@ if (selectedSensorSizes.length > 0) {
 // Apply output filter
 if (selectedOutputs.length > 0) {
   filteredProducts = filteredProducts.filter(product =>
-    product.data.output && selectedOutputs.some(selectedOutput => product.data.output.includes(selectedOutput))
+    product.data.output && selectedOutputs.every(selectedOutput => product.data.output.includes(selectedOutput))
   );
 }
 
