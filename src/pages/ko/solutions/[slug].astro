@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 const { solution } = Astro.props;
 const { Content } = await solution.render();
 ---
-<BaseLayout title={solution.data.title}>
+<BaseLayout title={solution.data.title} lang="ko">
   <article class="prose lg:prose-xl max-w-none">
     {solution.data.coverImage && <img src={solution.data.coverImage} alt={solution.data.title} class="rounded-xl" />}
     <h1>{solution.data.title}</h1>

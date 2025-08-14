@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const featured = (await getCollection('products', p => p.data.lang === 'en')).slice(0,3);
 const sols = (await getCollection('solutions', s => s.data.lang === 'en')).slice(0,2);
 ---
-<BaseLayout title="COX Camera – Home">
+<BaseLayout title="COX Camera – Home" lang="en">
   <section class="mb-10">
     <div class="rounded-2xl p-8 bg-neutral-100">
       <h1 class="text-3xl font-bold mb-2">Thermal Imaging Cameras & Solutions</h1>

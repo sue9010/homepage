@@ -1,1 +1,13 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply Material Design background and text colors */
+html {
+  background-color: theme('colors.background');
+  color: theme('colors.on-background');
+}
+
+body {
+  @apply font-sans; /* Ensure font-sans is applied */
+}

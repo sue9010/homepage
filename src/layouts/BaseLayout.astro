@@ -1,9 +1,13 @@
 ---
-const { title = 'COX Camera', description = 'Thermal imaging solutions by COX Camera' } = Astro.props;
+const { 
+  title = 'COX Camera', 
+  description = 'Thermal imaging solutions by COX Camera',
+  lang = 'ko'
+} = Astro.props;
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 ---
-<html lang="ko">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,12 +15,21 @@ import Footer from '@/components/Footer.astro';
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   </head>
-  <body class="min-h-screen flex flex-col bg-white text-neutral-900">
-    <Header />
+  <body class="min-h-screen flex flex-col bg-surface-1 text-on-surface font-sans">
+    <Header lang={lang} />
     <main class="container mx-auto px-4 py-8 flex-1">
       <slot />
     </main>
     <Footer />
   </body>
 </html>
+
+<style is:global>
+  body {
+    font-family: 'Noto Sans KR', 'Roboto', sans-serif;
+  }
+</style>

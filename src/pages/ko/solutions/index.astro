@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 const all = await getCollection('solutions', s => s.data.lang === 'ko');
 const solutions = all.sort((a,b) => (a.data.order ?? 999) - (b.data.order ?? 999));
 ---
-<BaseLayout title="솔루션">
+<BaseLayout title="솔루션" lang="ko">
   <h1 class="text-2xl font-bold mb-6">솔루션</h1>
   <ul class="space-y-4">
     {solutions.map(({ slug, data }) => (

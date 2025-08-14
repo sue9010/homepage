@@ -1,10 +1,13 @@
 ---
+import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
-<div class="container mx-auto px-4 py-16 text-center">
-  <h1 class="text-3xl font-bold mb-4">COX Camera</h1>
-  <p class="mb-6">Choose your language</p>
-  <div class="flex gap-4 justify-center">
-    <a href="/ko" class="px-4 py-2 rounded bg-black text-white">한국어</a>
-    <a href="/en" class="px-4 py-2 rounded border">English</a>
+<BaseLayout title="COX Camera - Choose Language">
+  <div class="container mx-auto px-4 py-16 text-center">
+    <h1 class="text-3xl font-bold mb-4">COX Camera</h1>
+    <p class="mb-6">Choose your language</p>
+    <div class="flex gap-4 justify-center">
+      <a href="/ko" class="px-4 py-2 rounded bg-black text-white">한국어</a>
+      <a href="/en" class="px-4 py-2 rounded border">English</a>
+    </div>
   </div>
-</div>
+</BaseLayout>

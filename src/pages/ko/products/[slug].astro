@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 const { product } = Astro.props;
 const { Content } = await product.render();
 ---
-<BaseLayout title={product.data.name}>
+<BaseLayout title={product.data.name} lang="ko">
   <article class="space-y-6">
     <h1 class="text-3xl font-bold">{product.data.name}</h1>
     {product.data.heroImage && <img src={product.data.heroImage} alt={product.data.name} class="rounded-xl" />}
