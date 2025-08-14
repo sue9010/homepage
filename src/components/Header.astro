@@ -7,7 +7,14 @@ const links = [
   { href: `${base}/products`, label: 'Products', icon: 'mdi:category' },
   { href: `${base}/solutions`, label: 'Solutions', icon: 'mdi:lightbulb-on' },
   { href: `${base}/about`, label: 'About', icon: 'mdi:information' },
-  { href: `${base}/support`, label: 'Support', icon: 'mdi:help-circle' },
+  {
+    label: lang === 'ko' ? 'Support' : 'Support',
+    icon: 'mdi:help-circle',
+    subLinks: [
+      { href: `${base}/support/technical`, label: lang === 'ko' ? '기술지원' : 'Technical Support' },
+      { href: `${base}/support/repair`, label: lang === 'ko' ? '수리접수' : 'Repair Request' },
+    ]
+  },
 ];
 ---
 <header class="sticky top-0 z-40 bg-white shadow-sm">
@@ -34,10 +41,27 @@ const links = [
       <div class="flex items-center gap-4">
         <ul class="hidden md:flex items-center gap-8 text-base font-medium">
           {links.map(link => (
-            <li>
-              <a href={link.href} class="hover:text-primary transition-colors">
-                <span>{link.label}</span>
-              </a>
+            <li class={link.subLinks ? 'relative group' : ''}>
+              {link.subLinks ? (
+                <>
+                  <span class="cursor-default hover:text-primary transition-colors flex items-center gap-1">
+                    {link.label} <Icon name="mdi:chevron-down" class="w-4 h-4" />
+                  </span>
+                  <ul class="absolute hidden group-hover:block bg-white shadow-md rounded-md py-2 w-40 z-50 top-full left-0">
+                    {link.subLinks.map(subLink => (
+                      <li>
+                        <a href={subLink.href} class="block px-4 py-2 hover:bg-surface-2 transition-colors">
+                          {subLink.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <a href={link.href} class="hover:text-primary transition-colors">
+                  <span>{link.label}</span>
+                </a>
+              )}
             </li>
           ))}
         </ul>
