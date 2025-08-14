@@ -2,14 +2,28 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import SolutionCard from '@/components/SolutionCard.astro';
+import HeroCarousel from '@/components/HeroCarousel.astro';
 import { getCollection } from 'astro:content';
+
+// Import Node.js file system modules
+import fs from 'fs';
+import path from 'path';
 
 const featuredProducts = (await getCollection('products', p => p.data.lang === 'ko')).slice(0,3);
 const featuredSolutions = (await getCollection('solutions', s => s.data.lang === 'ko')).slice(0,2);
+
+// Dynamically get image paths for the carousel
+const imagesDirectory = path.join(process.cwd(), 'public', 'assets', 'products', 'landing');
+const imageFiles = fs.readdirSync(imagesDirectory).filter(file => {
+  const ext = path.extname(file).toLowerCase();
+  return ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(ext);
+});
+
+const carouselImages = imageFiles.map(file => `/assets/products/landing/${file}`);
 ---
 <BaseLayout title="COX Camera – 홈" lang="ko">
-  <section class="relative bg-surface-1 text-on-surface py-24 mb-12 rounded-2xl overflow-hidden shadow-lg">
-    <div class="container mx-auto px-4 text-center relative z-10">
+  <section class="relative bg-surface-1 text-on-surface py-24 mb-12 overflow-hidden shadow-lg w-full">
+    <div class="text-center relative z-10">
       <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">정확한 열화상, 완벽한 솔루션</h1>
       <p class="text-xl md:text-2xl mb-10 opacity-90 max-w-3xl mx-auto">
         온도 변화 모니터링, 침입 탐지, 조기 화재 감지 등<br class="hidden md:block"/>
@@ -19,7 +33,7 @@ const featuredSolutions = (await getCollection('solutions', s => s.data.lang ===
         제품 살펴보기
       </a>
     </div>
-    <div class="absolute inset-0 opacity-50" style="background-image: url('/assets/products/sample/landing-1.jpg'); background-size: cover; background-position: center;"></div>
+    <HeroCarousel images={carouselImages} />
   </section>
 
   <section class="mb-12">

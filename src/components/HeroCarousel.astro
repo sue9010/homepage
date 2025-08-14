@@ -1,0 +1,31 @@
+---
+const { images } = Astro.props;
+const imagePaths = images.map(img => img.replace(/^.*public\//, '/')); // Convert absolute paths to relative public paths
+---
+<div id="hero-carousel" class="absolute inset-0 opacity-50 transition-opacity duration-1000" style="background-size: cover; background-position: center;"></div>
+
+<script define:vars={{ imagePaths }}>
+  const carousel = document.getElementById('hero-carousel');
+  let currentIndex = 0;
+
+  function changeBackground() {
+    carousel.style.opacity = '0'; // Start fade out
+    setTimeout(() => {
+      carousel.style.backgroundImage = `url(${imagePaths[currentIndex]})`;
+      currentIndex = (currentIndex + 1) % imagePaths.length;
+      carousel.style.opacity = '0.5'; // Fade in
+    }, 1000); // Match transition duration
+  }
+
+  // Initial background
+  if (imagePaths.length > 0) {
+    changeBackground(); // Set initial image
+    setInterval(changeBackground, 7000); // Change every 7 seconds
+  }
+</script>
+
+<style>
+  #hero-carousel {
+    transition: opacity 1s ease-in-out;
+  }
+</style>

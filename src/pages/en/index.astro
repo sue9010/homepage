@@ -1,33 +1,135 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ProductCard from '@/components/ProductCard.astro';
+import SolutionCard from '@/components/SolutionCard.astro';
+import HeroCarousel from '@/components/HeroCarousel.astro';
 import { getCollection } from 'astro:content';
-const featured = (await getCollection('products', p => p.data.lang === 'en')).slice(0,3);
-const sols = (await getCollection('solutions', s => s.data.lang === 'en')).slice(0,2);
+
+// Import Node.js file system modules
+import fs from 'fs';
+import path from 'path';
+
+const featuredProducts = (await getCollection('products', p => p.data.lang === 'en')).slice(0, 3);
+const featuredSolutions = (await getCollection('solutions', s => s.data.lang === 'en')).slice(0, 2);
+
+// Dynamically get image paths for the carousel
+const imagesDirectory = path.join(process.cwd(), 'public', 'assets', 'products', 'landing');
+const imageFiles = fs.readdirSync(imagesDirectory).filter(file => {
+  const ext = path.extname(file).toLowerCase();
+  return ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(ext);
+});
+
+const carouselImages = imageFiles.map(file => `/assets/products/landing/${file}`);
 ---
+
 <BaseLayout title="COX Camera – Home" lang="en">
-  <section class="mb-10">
-    <div class="rounded-2xl p-8 bg-neutral-100">
-      <h1 class="text-3xl font-bold mb-2">Thermal Imaging Cameras & Solutions</h1>
-      <p class="text-neutral-600">Affordable and reliable for industrial and on-site applications.</p>
+  <!-- Changed title and lang -->
+  <section class="relative bg-surface-1 text-on-surface py-24 mb-12 overflow-hidden shadow-lg w-full">
+    <div class="text-center relative z-10">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight">
+        Accurate Thermal Imaging, Perfect Solutions
+      </h1>
+      <!-- Translated -->
+      <p class="text-xl md:text-2xl mb-10 opacity-90 max-w-3xl mx-auto">
+        Temperature change monitoring, intrusion detection, early fire detection, and more.<br class="hidden md:block" />
+        We provide thermal cameras and solutions optimized for various industrial fields.
+      </p>
+      <!-- Translated -->
+      <a
+        href="/en/products"
+        class="inline-block bg-primary text-on-primary font-semibold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 text-lg"
+      >
+        Explore Products
+      </a>
+      <!-- Translated href and text -->
+    </div>
+    <HeroCarousel images={carouselImages} />
+  </section>
+
+  <section class="mb-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Featured Products</h2>
+    <!-- Translated -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        featuredProducts.map(({ slug, data }) => (
+          <ProductCard
+            href={`/en/products/${slug}`}
+            name={data.name}
+            shortDesc={data.shortDesc}
+            img={data.heroImage}
+          />
+        ))
+      }
+    </div>
+    <div class="text-center mt-10">
+      <a
+        href="/en/products"
+        class="inline-block text-primary font-semibold py-3 px-8 rounded-full border border-primary hover:bg-primary/10 transition-colors duration-300 text-lg"
+      >
+        View All Products
+      </a>
+      <!-- Translated href and text -->
     </div>
   </section>
 
-  <section class="mb-10">
-    <h2 class="text-xl font-semibold mb-4">Featured Products</h2>
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {featured.map(({ slug, data }) => (
-        <ProductCard href={`/en/products/${slug}`} name={data.name} shortDesc={data.shortDesc} img={data.heroImage} />
-      ))}
+  <section class="mb-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Featured Solutions</h2>
+    <!-- Translated -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        featuredSolutions.map(({ slug, data }) => (
+          <SolutionCard
+            href={`/en/solutions/${slug}`}
+            title={data.title}
+            shortDesc={data.shortDesc}
+            img={data.coverImage}
+          />
+        ))
+      }
+    </div>
+    <div class="text-center mt-10">
+      <a
+        href="/en/solutions"
+        class="inline-block text-primary font-semibold py-3 px-8 rounded-full border border-primary hover:bg-primary/10 transition-colors duration-300 text-lg"
+      >
+        View All Solutions
+      </a>
+      <!-- Translated href and text -->
     </div>
   </section>
 
-  <section>
-    <h2 class="text-xl font-semibold mb-4">Solutions</h2>
-    <ul class="list-disc pl-5 text-sm text-neutral-700">
-      {sols.map(({ slug, data }) => (
-        <li><a class="underline" href={`/en/solutions/${slug}`}>{data.title}</a> — {data.shortDesc}</li>
-      ))}
-    </ul>
+  <section class="bg-surface-2 py-16 rounded-2xl shadow-md">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold mb-6">Why COX Camera?</h2>
+      <!-- Translated -->
+      <p class="text-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+        COX Camera adds new value to your business with innovative thermal imaging technology and customized solutions.
+      </p>
+      <!-- Translated -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="p-6 bg-surface-1 rounded-xl shadow-sm">
+          <h3 class="text-xl font-semibold mb-3">Accuracy</h3>
+          <!-- Translated -->
+          <p class="text-on-surface-variant">
+            Detects even the slightest temperature changes with cutting-edge sensor technology.
+          </p>
+          <!-- Translated -->
+        </div>
+        <div class="p-6 bg-surface-1 rounded-xl shadow-sm">
+          <h3 class="text-xl font-semibold mb-3">Stability</h3>
+          <!-- Translated -->
+          <p class="text-on-surface-variant">Designed to operate robustly in any environment.</p>
+          <!-- Translated -->
+        </div>
+        <div class="p-6 bg-surface-1 rounded-xl shadow-sm">
+          <h3 class="text-xl font-semibold mb-3">Customized Solutions</h3>
+          <!-- Translated -->
+          <p class="text-on-surface-variant">
+            Provides optimal solutions tailored to specific customer needs.
+          </p>
+          <!-- Translated -->
+        </div>
+      </div>
+    </div>
   </section>
 </BaseLayout>
