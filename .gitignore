@@ -34,6 +34,5 @@ Thumbs.db
 error.txt
 
 .env
-thermal.json
 .vercel/
 .vscode/

@@ -2,6 +2,8 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection, getEntry } from 'astro:content';
 
+export const prerender = true; // Added this line
+
 export async function getStaticPaths() {
   const solutions = await getCollection('solutions', ({data}) => data.lang === 'en');
   return solutions.map(solution => ({

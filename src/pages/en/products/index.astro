@@ -7,9 +7,41 @@ const allProducts = await getCollection('products', p => p.data.lang === 'en');
 
 // Extract unique filter options from all products (before filtering)
 const uniqueCategories = [...new Set(allProducts.map(p => p.data.category))].filter(Boolean);
+const categoryCounts = {};
+allProducts.forEach(product => {
+  const category = product.data.category;
+  if (category) {
+    categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+  }
+});
+
 const uniqueResolutions = [...new Set(allProducts.map(p => p.data.resolution).filter(Boolean))];
+const resolutionCounts = {};
+allProducts.forEach(product => {
+  const resolution = product.data.resolution;
+  if (resolution) {
+    resolutionCounts[resolution] = (resolutionCounts[resolution] || 0) + 1;
+  }
+});
+
 const uniqueSensorSizes = [...new Set(allProducts.map(p => p.data.sensor_size).filter(Boolean))];
+const sensorSizeCounts = {};
+allProducts.forEach(product => {
+  const sensorSize = product.data.sensor_size;
+  if (sensorSize) {
+    sensorSizeCounts[sensorSize] = (sensorSizeCounts[sensorSize] || 0) + 1;
+  }
+});
+
 const uniqueOutputs = [...new Set(allProducts.flatMap(p => p.data.output || []).filter(Boolean))];
+const outputCounts = {};
+allProducts.forEach(product => {
+  if (product.data.output) {
+    product.data.output.forEach(output => {
+      outputCounts[output] = (outputCounts[output] || 0) + 1;
+    });
+  }
+});
 
 const url = new URL(Astro.request.url);
 const selectedCategories = url.searchParams.get('category')?.split(',') || [];
@@ -68,7 +100,7 @@ const products = filteredProducts.sort((a,b) => (a.data.order ?? 999) - (b.data.
                 class="form-checkbox h-4 w-4 text-blue-600"
                 checked={selectedCategories.includes(category)}
               />
-              <span class="ml-2 text-gray-700">{category}</span>
+              <span class="ml-2 text-gray-700">{category} ({categoryCounts[category] || 0})</span>
             </label>
           ))}
         </div>
@@ -86,7 +118,7 @@ const products = filteredProducts.sort((a,b) => (a.data.order ?? 999) - (b.data.
                 class="form-checkbox h-4 w-4 text-blue-600"
                 checked={selectedResolutions.includes(resolution)}
               />
-              <span class="ml-2 text-gray-700">{resolution}</span>
+              <span class="ml-2 text-gray-700">{resolution} ({resolutionCounts[resolution] || 0})</span>
             </label>
           ))}
         </div>
@@ -104,7 +136,7 @@ const products = filteredProducts.sort((a,b) => (a.data.order ?? 999) - (b.data.
                 class="form-checkbox h-4 w-4 text-blue-600"
                 checked={selectedSensorSizes.includes(sensorSize)}
               />
-              <span class="ml-2 text-gray-700">{sensorSize}</span>
+              <span class="ml-2 text-gray-700">{sensorSize} ({sensorSizeCounts[sensorSize] || 0})</span>
             </label>
           ))}
         </div>
@@ -122,7 +154,7 @@ const products = filteredProducts.sort((a,b) => (a.data.order ?? 999) - (b.data.
                 class="form-checkbox h-4 w-4 text-blue-600"
                 checked={selectedOutputs.includes(output)}
               />
-              <span class="ml-2 text-gray-700">{output}</span>
+              <span class="ml-2 text-gray-700">{output} ({outputCounts[output] || 0})</span>
             </label>
           ))}
         </div>

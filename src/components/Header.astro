@@ -4,7 +4,16 @@ import { Icon } from 'astro-icon/components';
 const { lang = 'ko' } = Astro.props;
 const base = lang === 'ko' ? '/ko' : '/en';
 const links = [
-  { href: `${base}/products`, label: 'Products', icon: 'mdi:category' },
+  {
+    label: lang === 'ko' ? 'Products' : 'Products',
+    icon: 'mdi:category',
+    subLinks: [
+      { href: `${base}/products?category=Thermal camera`, label: lang === 'ko' ? '열화상 카메라' : 'Thermal Camera' },
+      { href: `${base}/products?category=Lens`, label: lang === 'ko' ? '렌즈' : 'Lens' },
+      { href: `${base}/products?category=Housing`, label: lang === 'ko' ? '하우징' : 'Housing' },
+      { href: `${base}/products?category=Accessory`, label: lang === 'ko' ? '액세서리' : 'Accessory' },
+    ]
+  },
   { href: `${base}/solutions`, label: 'Solutions', icon: 'mdi:lightbulb-on' },
   { href: `${base}/about`, label: 'About', icon: 'mdi:information' },
   {
