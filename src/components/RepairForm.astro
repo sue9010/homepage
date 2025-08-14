@@ -82,7 +82,15 @@
           </div>
           <div>
             <label for="tempOption-${productCount}" class="block text-sm font-medium text-gray-700">온도 옵션</label>
-            <input type="text" id="tempOption-${productCount}" name="tempOption-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            <select id="tempOption-${productCount}" name="tempOption-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+              <option value="">선택하세요</option>
+              <option value="Security">Security</option>
+              <option value="Normal">Normal</option>
+              <option value="Medical">Medical</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Extreme">Extreme</option>
+            </select>
           </div>
           <div class="flex items-center space-x-2">
             <label for="geWindowToggle-${productCount}" class="text-sm font-medium text-gray-700">Ge Window 사용 여부</label>
