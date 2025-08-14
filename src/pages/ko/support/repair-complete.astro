@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const pageTitle = "수리 접수 완료";
+
+const url = Astro.url;
+const params = url.searchParams;
+
+const customerInfo = {
+  companyName: params.get('companyName'),
+  address: params.get('address'),
+  name: params.get('name'),
+  phoneNumber: params.get('phoneNumber'),
+  email: params.get('email'),
+};
+
+const products: any[] = [];
+let i = 0;
+while (params.get(`products[${i}][modelName]`)) {
+  products.push({
+    modelName: params.get(`products[${i}][modelName]`),
+    lensSize: params.get(`products[${i}][lensSize]`),
+    tempOption: params.get(`products[${i}][tempOption]`),
+    geWindowToggle: params.get(`products[${i}][geWindowToggle]`) === 'on' ? '사용' : '미사용',
+    geWindowSize: params.get(`products[${i}][geWindowSize]`),
+    serialNumber: params.get(`products[${i}][serialNumber]`),
+    purchaseDate: params.get(`products[${i}][purchaseDate]`),
+    symptoms: params.get(`products[${i}][symptoms]`),
+  });
+  i++;
+}
+
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">수리 접수 완료</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+      <h2 class="text-2xl font-semibold mb-4">접수 내용</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-medium mb-2">고객 정보</h3>
+        <p><strong>업체명:</strong> {customerInfo.companyName || '-'}</p>
+        <p><strong>주소:</strong> {customerInfo.address || '-'}</p>
+        <p><strong>이름:</strong> {customerInfo.name || '-'}</p>
+        <p><strong>전화번호:</strong> {customerInfo.phoneNumber || '-'}</p>
+        <p><strong>이메일:</strong> {customerInfo.email || '-'}</p>
+      </section>
+
+      {products.length > 0 && (
+        <section>
+          <h3 class="text-xl font-medium mb-2">제품 정보</h3>
+          {products.map((product, index) => (
+            <div class="border border-gray-200 p-4 rounded-md mb-4 last:mb-0">
+              <h4 class="text-lg font-medium mb-2">제품 #{index + 1}</h4>
+              <p><strong>모델명:</strong> {product.modelName || '-'}</p>
+              <p><strong>렌즈 크기:</strong> {product.lensSize || '-'}</p>
+              <p><strong>온도 옵션:</strong> {product.tempOption || '-'}</p>
+              <p><strong>Ge Window 사용 여부:</strong> {product.geWindowToggle || '-'}</p>
+              <p><strong>Ge Window 크기:</strong> {product.geWindowSize || '-'}</p>
+              <p><strong>시리얼 번호:</strong> {product.serialNumber || '-'}</p>
+              <p><strong>구매 시기:</strong> {product.purchaseDate || '-'}</p>
+              <p><strong>증상:</strong> {product.symptoms || '-'}</p>
+            </div>
+          ))}
+        </section>
+      )}
+    </div>
+
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8" role="alert">
+      <p class="font-bold">물품 발송 안내</p>
+      <p>이 페이지를 출력하여 물품에 동봉해주십시오.</p>
+      <p>접수된 물건은 아래 주소로 보내주시기 바랍니다.</p>
+      <p class="mt-2"><strong>받는 사람:</strong> 콕스 하수민</p>
+      <p><strong>연락처:</strong> 010-3462-1008</p>
+      <p><strong>주소:</strong> 서울시 구로구 디지털로 242 한화비즈메트로 1차 810호</p>
+    </div>
+
+    <div class="flex justify-end">
+      <button onclick="window.print()" class="px-6 py-3 bg-blue-600 text-white rounded-md text-lg font-semibold hover:bg-blue-700">
+        내용 출력
+      </button>
+    </div>
+  </div>
+</BaseLayout>

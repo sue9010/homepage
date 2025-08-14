@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const pageTitle = "Repair Submission Complete";
+
+const url = Astro.url;
+const params = url.searchParams;
+
+const customerInfo = {
+  companyName: params.get('companyName'),
+  address: params.get('address'),
+  name: params.get('name'),
+  phoneNumber: params.get('phoneNumber'),
+  email: params.get('email'),
+};
+
+const products: any[] = [];
+let i = 0;
+while (params.get(`products[${i}][modelName]`)) {
+  products.push({
+    modelName: params.get(`products[${i}][modelName]`),
+    lensSize: params.get(`products[${i}][lensSize]`),
+    tempOption: params.get(`products[${i}][tempOption]`),
+    geWindowToggle: params.get(`products[${i}][geWindowToggle]`) === 'on' ? 'Used' : 'Not Used',
+    geWindowSize: params.get(`products[${i}][geWindowSize]`),
+    serialNumber: params.get(`products[${i}][serialNumber]`),
+    purchaseDate: params.get(`products[${i}][purchaseDate]`),
+    symptoms: params.get(`products[${i}][symptoms]`),
+  });
+  i++;
+}
+
+---
+
+<BaseLayout pageTitle={pageTitle}>
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6">Repair Submission Complete</h1>
+
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+      <h2 class="text-2xl font-semibold mb-4">Submission Details</h2>
+
+      <section class="mb-6">
+        <h3 class="text-xl font-medium mb-2">Customer Information</h3>
+        <p><strong>Company Name:</strong> {customerInfo.companyName || '-'}</p>
+        <p><strong>Address:</strong> {customerInfo.address || '-'}</p>
+        <p><strong>Name:</strong> {customerInfo.name || '-'}</p>
+        <p><strong>Phone Number:</strong> {customerInfo.phoneNumber || '-'}</p>
+        <p><strong>Email:</strong> {customerInfo.email || '-'}</p>
+      </section>
+
+      {products.length > 0 && (
+        <section>
+          <h3 class="text-xl font-medium mb-2">Product Information</h3>
+          {products.map((product, index) => (
+            <div class="border border-gray-200 p-4 rounded-md mb-4 last:mb-0">
+              <h4 class="text-lg font-medium mb-2">Product #{index + 1}</h4>
+              <p><strong>Model Name:</strong> {product.modelName || '-'}</p>
+              <p><strong>Lens Size:</strong> {product.lensSize || '-'}</p>
+              <p><strong>Temperature Option:</strong> {product.tempOption || '-'}</p>
+              <p><strong>Ge Window Used:</strong> {product.geWindowToggle || '-'}</p>
+              <p><strong>Ge Window Size:</strong> {product.geWindowSize || '-'}</p>
+              <p><strong>Serial Number:</strong> {product.serialNumber || '-'}</p>
+              <p><strong>Purchase Date:</strong> {product.purchaseDate || '-'}</p>
+              <p><strong>Symptoms:</strong> {product.symptoms || '-'}</p>
+            </div>
+          ))}
+        </section>
+      )}
+    </div>
+
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8" role="alert">
+      <p class="font-bold">Shipping Information</p>
+      <p>Please send the item(s) to the address below:</p>
+      <p class="mt-2"><strong>Recipient:</strong> Cox Hasumin</p>
+      <p><strong>Contact:</strong> 010-3462-1008</p>
+      <p><strong>Address:</strong> Seoul, Guro-gu, Digital-ro 242, Hanwha Bizmetro 1st, 810ho</p>
+    </div>
+
+    <div class="flex justify-end">
+      <button onclick="window.print()" class="px-6 py-3 bg-blue-600 text-white rounded-md text-lg font-semibold hover:bg-blue-700">
+        Print Details
+      </button>
+    </div>
+  </div>
+</BaseLayout>
