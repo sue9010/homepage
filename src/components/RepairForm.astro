@@ -161,12 +161,8 @@
           console.log('Submission successful:', result);
           alert(result.message);
           loadingOverlay.classList.add('hidden'); // Hide on non-redirect success
-        } else {
-          const error = await response.json();
-          console.error('Submission failed:', error);
-          alert(`Submission failed: ${error.message}`);
-          loadingOverlay.classList.add('hidden'); // Hide on error
         }
+        // No else for 302 redirect, as it will navigate away
       } catch (error) {
         console.error('Error during submission:', error);
         alert('An unexpected error occurred during submission.');

@@ -2,14 +2,151 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ProductCard from '@/components/ProductCard.astro';
 import { getCollection } from 'astro:content';
-const all = await getCollection('products', p => p.data.lang === 'en');
-const products = all.sort((a,b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+
+const allProducts = await getCollection('products', p => p.data.lang === 'en');
+
+// Extract unique filter options from all products (before filtering)
+const uniqueCategories = [...new Set(allProducts.map(p => p.data.category))].filter(Boolean);
+const uniqueResolutions = [...new Set(allProducts.map(p => p.data.resolution).filter(Boolean))];
+const uniqueSensorSizes = [...new Set(allProducts.map(p => p.data.sensor_size).filter(Boolean))];
+
+const url = new URL(Astro.request.url);
+const selectedCategories = url.searchParams.get('category')?.split(',') || [];
+const selectedResolutions = url.searchParams.get('resolution')?.split(',') || [];
+const selectedSensorSizes = url.searchParams.get('sensor_size')?.split(',') || [];
+
+let filteredProducts = allProducts;
+
+// Apply category filter
+if (selectedCategories.length > 0) {
+  filteredProducts = filteredProducts.filter(product =>
+    selectedCategories.includes(product.data.category)
+  );
+}
+
+// Apply resolution filter
+if (selectedResolutions.length > 0) {
+  filteredProducts = filteredProducts.filter(product =>
+    product.data.resolution && selectedResolutions.includes(product.data.resolution)
+  );
+}
+
+// Apply sensor_size filter
+if (selectedSensorSizes.length > 0) {
+  filteredProducts = filteredProducts.filter(product =>
+    product.data.sensor_size && selectedSensorSizes.includes(product.data.sensor_size)
+  );
+}
+
+const products = filteredProducts.sort((a,b) => (a.data.order ?? 999) - (b.data.order ?? 999));
 ---
 <BaseLayout title="Products" lang="en">
   <h1 class="text-2xl font-bold mb-6">Products</h1>
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    {products.map(({ slug, data }) => (
-      <ProductCard href={`/en/products/${slug}`} name={data.name} shortDesc={data.shortDesc} img={data.heroImage} />
-    ))}
+  <div class="flex flex-col md:flex-row gap-8">
+    <!-- Filter Sidebar -->
+    <aside class="md:w-1/4 bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Filters</h2>
+
+      <div class="mb-6">
+        <h3 class="text-lg font-medium mb-2">Category</h3>
+        <div class="space-y-2">
+          {uniqueCategories.map(category => (
+            <label class="flex items-center">
+              <input
+                type="checkbox"
+                name="category"
+                value={category}
+                class="form-checkbox h-4 w-4 text-blue-600"
+                checked={selectedCategories.includes(category)}
+              />
+              <span class="ml-2 text-gray-700">{category}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <h3 class="text-lg font-medium mb-2">Resolution</h3>
+        <div class="space-y-2">
+          {uniqueResolutions.map(resolution => (
+            <label class="flex items-center">
+              <input
+                type="checkbox"
+                name="resolution"
+                value={resolution}
+                class="form-checkbox h-4 w-4 text-blue-600"
+                checked={selectedResolutions.includes(resolution)}
+              />
+              <span class="ml-2 text-gray-700">{resolution}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-lg font-medium mb-2">Sensor Size</h3>
+        <div class="space-y-2">
+          {uniqueSensorSizes.map(sensorSize => (
+            <label class="flex items-center">
+              <input
+                type="checkbox"
+                name="sensor_size"
+                value={sensorSize}
+                class="form-checkbox h-4 w-4 text-blue-600"
+                checked={selectedSensorSizes.includes(sensorSize)}
+              />
+              <span class="ml-2 text-gray-700">{sensorSize}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    </aside>
+
+    <!-- Product List -->
+    <div class="md:w-3/4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" id="product-list">
+      {products.length === 0 ? (
+        <p class="col-span-full text-center text-gray-600">No products found matching your filters.</p>
+      ) : (
+        products.map(({ slug, data }) => (
+          <ProductCard
+            href={`/en/products/${slug}`}
+            name={data.name}
+            mainDesc={data.mainDesc} // Changed from shortDesc
+            img={data.heroImage}
+            category={data.category}
+            resolution={data.resolution}
+            sensorSize={data.sensor_size}
+          />
+        ))
+      )}
+    </div>
   </div>
 </BaseLayout>
+
+<script>
+  document.addEventListener('change', (event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.matches('input[type="checkbox"][name="category"], input[type="checkbox"][name="resolution"], input[type="checkbox"][name="sensor_size"]')) {
+      const form = target.closest('aside');
+      if (!form) return;
+
+      const searchParams = new URLSearchParams(window.location.search);
+
+      const updateParam = (name: string) => {
+        const checkboxes = form.querySelectorAll(`input[type="checkbox"][name="${name}"]:checked`) as NodeListOf<HTMLInputElement>;
+        const values = Array.from(checkboxes).map(cb => cb.value);
+        if (values.length > 0) {
+          searchParams.set(name, values.join(','));
+        } else {
+          searchParams.delete(name);
+        }
+      };
+
+      updateParam('category');
+      updateParam('resolution');
+      updateParam('sensor_size');
+
+      window.location.search = searchParams.toString();
+    }
+  });
+</script>

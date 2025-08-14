@@ -7,6 +7,7 @@ const products = defineCollection({
     model: z.string().optional(),
     category: z.string(),
     shortDesc: z.string(),
+    mainDesc: z.string().optional(), // New field
     heroImage: z.string().optional(),
     gallery: z.array(z.string()).optional(),
     specs: z.array(
@@ -29,6 +30,8 @@ const products = defineCollection({
       })
     ).optional(),
     order: z.number().optional(),
+    resolution: z.string().optional(), // New field
+    sensor_size: z.string().optional(), // New field
     lang: z.enum(['ko','en']).default('ko')
   })
 });
