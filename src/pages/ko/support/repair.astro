@@ -1,9 +1,10 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RepairForm from '../../../components/RepairForm.astro';
+
+const pageTitle = "수리 요청";
 ---
-<BaseLayout title="수리접수" lang="ko">
-  <section class="py-10 mb-10 container mx-auto px-4">
-    <h1 class="text-4xl font-bold mb-4">수리접수 페이지</h1>
-    <p>수리접수 관련 내용이 여기에 표시됩니다.</p>
-  </section>
+
+<BaseLayout pageTitle={pageTitle}>
+  <RepairForm />
 </BaseLayout>
