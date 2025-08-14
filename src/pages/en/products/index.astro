@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import { getCollection } from 'astro:content';
+const all = await getCollection('products', p => p.data.lang === 'en');
+const products = all.sort((a,b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+---
+<BaseLayout title="Products">
+  <h1 class="text-2xl font-bold mb-6">Products</h1>
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {products.map(({ slug, data }) => (
+      <ProductCard href={`/en/products/${slug}`} name={data.name} shortDesc={data.shortDesc} img={data.heroImage} />
+    ))}
+  </div>
+</BaseLayout>

@@ -22,3 +22,13 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# VS Code
+.vscode/launch.json
+.vscode/settings.json
+
+# Windows thumbnail cache
+Thumbs.db
+
+# User-generated files
+error.txt

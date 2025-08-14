@@ -1,0 +1,22 @@
+---
+const { title = 'COX Camera', description = 'Thermal imaging solutions by COX Camera' } = Astro.props;
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+---
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </head>
+  <body class="min-h-screen flex flex-col bg-white text-neutral-900">
+    <Header />
+    <main class="container mx-auto px-4 py-8 flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

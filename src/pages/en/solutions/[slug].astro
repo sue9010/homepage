@@ -1,0 +1,23 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const solutions = await getCollection('solutions', ({data}) => data.lang === 'en');
+  return solutions.map(solution => ({
+    params: { slug: solution.slug },
+    props: { solution },
+  }));
+}
+
+const { solution } = Astro.props;
+const { Content } = await solution.render();
+---
+<BaseLayout title={solution.data.title}>
+  <article class="prose lg:prose-xl max-w-none">
+    {solution.data.coverImage && <img src={solution.data.coverImage} alt={solution.data.title} class="rounded-xl" />}
+    <h1>{solution.data.title}</h1>
+    <p class="lead">{solution.data.shortDesc}</p>
+    <Content />
+  </article>
+</BaseLayout>

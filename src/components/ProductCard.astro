@@ -1,0 +1,8 @@
+---
+const { href, name, shortDesc, img } = Astro.props;
+---
+<a href={href} class="block rounded-2xl p-4 shadow hover:shadow-lg transition bg-white">
+  {img && <img src={img} alt={name} class="rounded-xl mb-3" />}
+  <h3 class="font-semibold">{name}</h3>
+  <p class="text-sm text-neutral-600">{shortDesc}</p>
+</a>

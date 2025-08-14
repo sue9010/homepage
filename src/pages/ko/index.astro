@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProductCard from '@/components/ProductCard.astro';
+import { getCollection } from 'astro:content';
+const featured = (await getCollection('products', p => p.data.lang === 'ko')).slice(0,3);
+const sols = (await getCollection('solutions', s => s.data.lang === 'ko')).slice(0,2);
+---
+<BaseLayout title="COX Camera – 홈">
+  <section class="mb-10">
+    <div class="rounded-2xl p-8 bg-neutral-100">
+      <h1 class="text-3xl font-bold mb-2">열화상 카메라 & 솔루션</h1>
+      <p class="text-neutral-600">산업/현장용을 위한 합리적 가격과 안정성</p>
+    </div>
+  </section>
+
+  <section class="mb-10">
+    <h2 class="text-xl font-semibold mb-4">Featured Products</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map(({ slug, data }) => (
+        <ProductCard href={`/ko/products/${slug}`} name={data.name} shortDesc={data.shortDesc} img={data.heroImage} />
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-xl font-semibold mb-4">Solutions</h2>
+    <ul class="list-disc pl-5 text-sm text-neutral-700">
+      {sols.map(({ slug, data }) => (
+        <li><a class="underline" href={`/ko/solutions/${slug}`}>{data.title}</a> — {data.shortDesc}</li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
