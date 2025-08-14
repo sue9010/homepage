@@ -4,7 +4,16 @@
 <div class="container mx-auto p-6">
   <h1 class="text-3xl font-bold mb-6">수리 요청</h1>
 
-  <form id="repairForm" class="space-y-8">
+  <form id="repairForm" class="space-y-8 relative">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 hidden">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto mb-4"></div>
+        <p class="text-lg font-semibold text-gray-700">수리 요청 제출 중...</p>
+        <p class="text-sm text-gray-500">잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+
     <!-- 고객 정보 -->
     <section class="bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-2xl font-semibold mb-4">고객 정보</h2>
@@ -38,11 +47,11 @@
       <div id="product-entries" class="space-y-6">
         <!-- Initial product entry will be added by JavaScript or directly here -->
       </div>
-      <button type="button" id="addProductBtn" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">제품 추가</button>
+      <button type="button" id="addProductBtn" class="mt-4 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">제품 추가</button>
     </section>
 
     <div class="flex justify-end">
-      <button type="submit" class="px-6 py-3 bg-green-600 text-white rounded-md text-lg font-semibold hover:bg-green-700">수리 요청 제출</button>
+      <button type="submit" class="px-6 py-3 bg-blue-700 text-white rounded-md text-lg font-semibold hover:bg-blue-800">수리 요청 제출</button>
     </div>
   </form>
 </div>
@@ -99,7 +108,7 @@
           <label for="symptoms-${productCount}" class="block text-sm font-medium text-gray-700">증상</label>
           <textarea id="symptoms-${productCount}" name="symptoms-${productCount}" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
         </div>
-        <button type="button" class="remove-product-btn px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700">제품 삭제</button>
+        <button type="button" class="remove-product-btn px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">제품 삭제</button>
       `;
       productEntriesContainer.appendChild(entryDiv);
 
@@ -124,6 +133,9 @@
     repairForm.addEventListener('submit', async (event) => {
       event.preventDefault();
 
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      loadingOverlay.classList.remove('hidden'); // Show loading overlay
+
       const formData = new FormData(repairForm);
       // For checkbox, FormData only includes it if checked. Manually add unchecked ones.
       document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
@@ -144,17 +156,21 @@
         if (response.redirected || response.status === 302) {
           window.location.href = response.url;
         } else if (response.ok) {
+          // This path is less likely now with 302 redirect, but keep for robustness
           const result = await response.json();
           console.log('Submission successful:', result);
           alert(result.message);
+          loadingOverlay.classList.add('hidden'); // Hide on non-redirect success
         } else {
           const error = await response.json();
           console.error('Submission failed:', error);
           alert(`Submission failed: ${error.message}`);
+          loadingOverlay.classList.add('hidden'); // Hide on error
         }
       } catch (error) {
         console.error('Error during submission:', error);
         alert('An unexpected error occurred during submission.');
+        loadingOverlay.classList.add('hidden'); // Hide on network/unexpected error
       }
     });
   });
