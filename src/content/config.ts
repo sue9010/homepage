@@ -32,6 +32,7 @@ const products = defineCollection({
     order: z.number().optional(),
     resolution: z.string().optional(), // New field
     sensor_size: z.string().optional(), // New field
+    output: z.array(z.string()).optional(), // New field
     lang: z.enum(['ko','en']).default('ko')
   })
 });
