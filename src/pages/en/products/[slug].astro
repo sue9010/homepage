@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection, getEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components'; // Import Icon for the button
+import { documents } from '@/data/documents'; // Import documents data
 
 export async function getStaticPaths() {
-  const products = await getCollection('products', ({data}) => data.lang === 'en');
+  const products = await getCollection('products', ({data}) => data.lang === 'en'); // Changed to 'en'
   return products.map(product => ({
     params: { slug: product.slug },
     props: { product },
@@ -13,23 +15,80 @@ export async function getStaticPaths() {
 const { product } = Astro.props;
 const { Content } = await product.render();
 ---
-<BaseLayout title={product.data.name} lang="en">
-  <article class="space-y-6">
-    <h1 class="text-3xl font-bold">{product.data.name}</h1>
-    {product.data.heroImage && <img src={product.data.heroImage} alt={product.data.name} class="rounded-xl" />}
-    <p class="text-neutral-600">{product.data.shortDesc}</p>
-    {product.data.specs && (
-      <table class="w-full text-sm">
-        <tbody>
-          {product.data.specs.map(s => (
-            <tr>
-              <td class="py-1 pr-4 font-medium">{s.key}</td>
-              <td class="py-1">{s.value}</td>
-            </tr>
+<BaseLayout title={product.data.name} lang="en"> {/* Changed lang */}
+  <section class="py-10 mb-10 bg-surface-2 rounded-xl shadow-md">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+      {product.data.heroImage && (
+        <div class="md:w-1/2">
+          <img src={product.data.heroImage} alt={product.data.name} class="rounded-lg shadow-lg w-full h-auto object-cover" />
+        </div>
+      )}
+      <div class="md:w-1/2 text-center md:text-left">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-on-surface">{product.data.name}</h1>
+        <p class="text-xl text-on-surface-variant mb-6 whitespace-pre-wrap">{product.data.shortDesc}</p>
+        <a href="/en/support" class="inline-flex items-center gap-2 bg-primary text-on-primary font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 text-lg">
+          <Icon name="mdi:email" class="w-6 h-6" />
+          Contact Us
+        </a> {/* Translated href and text */}
+      </div>
+    </div>
+  </section>
+
+  <article class="container mx-auto px-4 space-y-10">
+    {product.data.gallery && product.data.gallery.length > 0 && (
+      <section>
+        <h2 class="text-3xl font-bold mb-6 text-on-surface">Gallery</h2> {/* Translated */}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {product.data.gallery.map(imgSrc => (
+            <img src={imgSrc} alt={`${product.data.name} gallery image`} class="rounded-lg shadow-sm w-full h-48 object-cover" />
           ))}
-        </tbody>
-      </table>
+        </div>
+      </section>
     )}
-    <Content />
+
+    {product.data.specs && (
+      <section>
+        <h2 class="text-3xl font-bold mb-6 text-on-surface">Technical Specifications</h2> {/* Translated */}
+        <div class="overflow-x-auto rounded-lg shadow-md">
+          <table class="w-full text-sm text-center text-on-surface-variant">
+            
+            <tbody>
+              {product.data.specs.map(spec => (
+                spec.type === 'section' ? (
+                  <tr class="bg-surface-1 border-b border-surface-3">
+                    <td colspan="2" class="px-6 py-3 font-bold text-on-surface text-left bg-surface-3">
+                      {spec.title}
+                    </td>
+                  </tr>
+                ) : (
+                  <tr class="bg-surface-1 border-b border-surface-3 hover:bg-surface-2">
+                    <td class="px-6 py-4 font-medium text-on-surface whitespace-nowrap text-center">{spec.key}</td>
+                    <td class="px-6 py-4 text-center">{spec.value}</td>
+                  </tr>
+                )
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+
+    {product.data.relatedDocuments && product.data.relatedDocuments.length > 0 && (
+      <section>
+        <h2 class="text-3xl font-bold mb-6 text-on-surface">Related Documents</h2> {/* Translated */}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {product.data.relatedDocuments.map(doc => (
+            <a href={doc.url} target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-4 bg-surface-1 rounded-lg shadow-sm hover:bg-surface-2 transition-colors duration-200">
+              <Icon name="mdi:download" class="w-6 h-6 text-primary" />
+              <span class="text-lg font-medium text-on-surface">{doc.title}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="prose lg:prose-xl max-w-none text-on-surface">
+      <Content />
+    </section>
   </article>
 </BaseLayout>

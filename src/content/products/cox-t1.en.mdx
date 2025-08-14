@@ -2,16 +2,39 @@
 name: "COX T1 Thermal Camera"
 model: "COX-T1"
 category: "Thermal Camera"
-shortDesc: "Entry-level thermal camera for industrial/on-site use"
+shortDesc: |
+  Entry-level thermal camera for industrial/on-site use
+  change line
 heroImage: "/assets/products/sample/placeholder.png"
 gallery:
   - "/assets/products/sample/placeholder.png"
   - "/assets/products/sample/placeholder.png"
 specs:
-  - { key: "Resolution", value: "384 x 288" }
-  - { key: "Spectral Band", value: "LWIR 8–14μm" }
-  - { key: "Frame Rate", value: "30 fps" }
-  - { key: "Interface", value: "RTSP, HTTP API" }
+  - { type: "section", title: "Sensor & Image" }
+  - { type: "item", key: "Resolution", value: "384x288 / 640x480 / 1024x768" }
+  - { type: "item", key: "Infrared Wavelength", value: "8–14μm" }
+  - { type: "item", key: "Sensor Type", value: "Uncooled Microbolometer" }
+  - { type: "item", key: "Sensor Size (Pixel Pitch)", value: "17μm / 12μm" }
+  - { type: "item", key: "Thermal Sensitivity (NETD)", value: "<50mK @f1.0, 30Hz, 300K" }
+  - { type: "section", title: "Temperature Measurement" }
+  - { type: "item", key: "Operating Temperature", value: "-10℃ ~ 60℃" }
+  - { type: "item", key: "Temperature Measurement Accuracy", value: "± 2℃ or ±2% of reading" }
+  - { type: "item", key: "Temperature Measurement Range", value: "Medical1: 20~50℃, Medical2: 0~70℃, Ambient: -20~120℃, Mid: 0~300℃, High: -20~120℃ / 0~500℃ (dual), Ultra-high: 400~1100℃" }
+  - { type: "section", title: "Interface & Software" }
+  - { type: "item", key: "Focus & Zoom Control", value: "Manual / COX dedicated software" }
+  - { type: "item", key: "Video Output", value: "BNC connector (composite), Mini HDMI" }
+  - { type: "item", key: "Video frame rate", value: "NTSC 30Hz, PAL 25Hz / HDMI 50Hz or 60Hz" }
+  - { type: "item", key: "Temperature Data Output", value: "Ethernet port (Gigabit Ethernet)" }
+  - { type: "item", key: "Frame rate", value: "9Hz / 30Hz (factory selectable)" }
+  - { type: "item", key: "Ethernet", value: "Gigabit Ethernet (10/100/1000Mbps)" }
+  - { type: "item", key: "PC Software", value: "Thermal imaging analyzer, camera controller, Thermal report, One channel analyzer, Quad channel analyzer, SDK (Windows, Linux)" }
+  - { type: "section", title: "Physical Specifications" }
+  - { type: "item", key: "Power Consumption", value: "4W, 12V/320mA" }
+  - { type: "item", key: "Dimensions (WxHxD, excl. lens)", value: "62x51.5x92mm" }
+  - { type: "item", key: "Weight (excl. lens)", value: "290g / 310g" }
+relatedDocuments: # New field
+  - { title: "COX T1 Datasheet", url: "/assets/documents/cox-t1-datasheet.pdf" }
+  - { title: "COX T1 User Manual", url: "/assets/documents/cox-t1-manual.pdf" }
 order: 1
 lang: "en"
 ---

@@ -9,7 +9,25 @@ const products = defineCollection({
     shortDesc: z.string(),
     heroImage: z.string().optional(),
     gallery: z.array(z.string()).optional(),
-    specs: z.array(z.object({ key: z.string(), value: z.string() })).optional(),
+    specs: z.array(
+      z.union([
+        z.object({
+          type: z.literal('section'),
+          title: z.string(),
+        }),
+        z.object({
+          type: z.literal('item'),
+          key: z.string(),
+          value: z.string(),
+        })
+      ])
+    ).optional(),
+    relatedDocuments: z.array(
+      z.object({
+        title: z.string(),
+        url: z.string(),
+      })
+    ).optional(),
     order: z.number().optional(),
     lang: z.enum(['ko','en']).default('ko')
   })

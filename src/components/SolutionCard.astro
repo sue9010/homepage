@@ -5,6 +5,6 @@ const { href, title, shortDesc, img } = Astro.props;
   {img && <img src={img} alt={title} class="w-full h-48 object-cover" />}
   <div class="p-4">
     <h3 class="font-semibold text-on-surface text-lg mb-1">{title}</h3>
-    <p class="text-sm text-on-surface-variant">{shortDesc}</p>
+    <p class="text-sm text-on-surface-variant whitespace-pre-wrap">{shortDesc}</p>
   </div>
 </a>
