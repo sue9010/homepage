@@ -1,7 +1,178 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const pageTitle = "회사 소개";
 ---
-<BaseLayout title="회사 소개" lang="ko">
-  <h1 class="text-2xl font-bold mb-6">회사 소개</h1>
-  <p>COX Camera는...</p>
+
+<BaseLayout title={pageTitle} lang="ko">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center mb-12">회사 소개</h1>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold mb-6 border-b pb-2">우리는 누구인가?</h2>
+      <p class="text-lg leading-relaxed mb-4">
+        (주)콕스카메라는 혁신적인 열화상 카메라 기술을 선도하는 기업입니다.
+        수년간의 연구 개발과 현장 경험을 바탕으로, 다양한 산업 분야에 최적화된
+        고성능 열화상 솔루션을 제공하고 있습니다. 우리는 고객의 안전과 효율성
+        향상에 기여하며, 끊임없는 기술 혁신을 통해 미래를 만들어가고 있습니다.
+      </p>
+      <p class="text-lg leading-relaxed">
+        우리의 제품은 예측 유지보수, 화재 감지, 보안 감시, 의료 진단 등 광범위한
+        응용 분야에서 뛰어난 성능을 발휘합니다. 최고 수준의 품질과 신뢰성을
+        자랑하는 콕스카메라의 솔루션으로 귀사의 비즈니스에 새로운 가치를 더하십시오.
+      </p>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold mb-6 border-b pb-2">연혁</h2>
+      <div class="flex flex-col md:flex-row gap-8 items-start">
+        <div class="md:w-2/3">
+          <div class="relative border-l-4 border-blue-600 pl-6">
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2024년</h3>
+              <p class="text-gray-700">ETRI 드론 탐지 EO/IR Solution 개발</p>
+              <p class="text-gray-700">농어촌공사 불꽃 감지 센서 적용 소형 EO/IR 제품 납품 (100여 대)</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2023년</h3>
+              <p class="text-gray-700">V 시리즈 출시 (센서 이동 방식 기반 빠른 초점 제어 기술 적용)</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2021년</h3>
+              <p class="text-gray-700">AIO320B 출시 (PC 일체형 발열자 선별 열화상 카메라)</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2020년</h3>
+              <p class="text-gray-700">한국 교육부 학교 열화상 카메라 설치 (서울·대전·전북 등 약 2,000개 학교)</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2019년</h3>
+              <p class="text-gray-700">CZ 시리즈 출시 (12µm pixel pitch 센서, 보안/온도측정용)</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2017년</h3>
+              <p class="text-gray-700">CN 시리즈 출시 (17µm pixel pitch 센서, 차량용 나이트 비전)</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2016년</h3>
+              <p class="text-gray-700">CG 시리즈 출시 (17µm pixel pitch 센서, 보안/온도측정용)</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2011년</h3>
+              <p class="text-gray-700">CX 시리즈 출시 (25µm pixel pitch 센서, 보안/온도측정용)</p>
+            </div>
+
+            <div class="mb-8">
+              <div class="absolute w-3 h-3 bg-blue-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+              <h3 class="text-xl font-semibold text-blue-700">2010년</h3>
+              <p class="text-gray-700">(주)콕스 설립 및 부설 연구소 설립</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="md:w-1/3 flex justify-center items-center">
+          <img src="/assets/products/landing/landing-1.jpg" alt="회사 연혁 관련 이미지" class="rounded-lg shadow-md w-full h-full object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-3xl font-semibold mb-6 border-b pb-2">대표 납품 기록</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-2">
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">DMZ내 중거리 감시 카메라</h3>
+          <p class="text-gray-700">대한민국 · CX600 · 380대 · 2013</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">DMZ내 중거리 감시 카메라</h3>
+          <p class="text-gray-700">대한민국 · CX600 · 50대 · 2014</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">육군 후방중요시설 1,2차 핵심시설 카메라</h3>
+          <p class="text-gray-700">대한민국 · CG600IP · 142대 · 2016~2018</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">한강 자살방지 카메라</h3>
+          <p class="text-gray-700">대한민국 · CX600IP · 32대 · 2019</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">부산 감천항 밀항 감시 카메라</h3>
+          <p class="text-gray-700">대한민국 · CX600 · 8대 · 2019</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">해병대 해안 경비 카메라</h3>
+          <p class="text-gray-700">대한민국 · CG600IP · 48대 · 2019</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">두바이 경찰 및 아부다비 군</h3>
+          <p class="text-gray-700">아랍에미레이트 · CN300 · 883대 · 2019</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">GOTTAD TUNNEL</h3>
+          <p class="text-gray-700">SIMENS · CX640 · 59대 · 2019</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">특수 병원 시설 감지 카메라</h3>
+          <p class="text-gray-700">UK · CG600IP · 58대 · 2020</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">교육청 발열자 선별 카메라</h3>
+          <p class="text-gray-700">대한민국 · CG320 · 2,000대 · 2020</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">포스코 발전소</h3>
+          <p class="text-gray-700">대한민국 · CG640IP(방폭형) · 20대 · 2023</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">도로공사</h3>
+          <p class="text-gray-700">대한민국 · CG320IP(방폭형) · 30대 · 2023</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold mb-2">ETRI</h3>
+          <p class="text-gray-700">대한민국 · CG600IP · 2대 · 2024</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold mb-6 border-b pb-2">오시는 길</h2>
+      <p class="text-lg leading-relaxed mb-4">
+        <strong>주소:</strong> 서울시 구로구 디지털로 242 한화비즈메트로 1차 810호
+      </p>
+      <div class="w-full h-96 bg-gray-200 flex items-center justify-center rounded-lg overflow-hidden">
+        <!-- Kakao Map Embed Code -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3166.1456998085196!2d126.8910819121662!3d37.480887996342524!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357c9e21734fd20d%3A0x236be80371c1b1b0!2z7ISc7Jq47Yq567OE7IucIOq1rOuhnOq1rCDrlJTsp4DthLjroZwgMjQy!5e0!3m2!1sko!2skr!4v1755489647392!5m2!1sko!2skr" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </section>
+  </div>
 </BaseLayout>

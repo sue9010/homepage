@@ -1,8 +1,10 @@
 ---
-const { 
-  title = 'COX Camera', 
+const {
+  title = 'COX Camera',
   description = 'Thermal imaging solutions by COX Camera',
-  lang = 'ko'
+  lang = 'ko',
+  image, // New prop for OG image
+  type = 'website' // New prop for OG type
 } = Astro.props;
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
@@ -15,6 +17,11 @@ import Footer from '@/components/Footer.astro';
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:image" content={image || '/assets/products/logo/COX LOGO.png'} />
+    <meta property="og:type" content={type || 'website'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={image || '/assets/products/logo/COX LOGO.png'} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -44,6 +51,13 @@ import Footer from '@/components/Footer.astro';
     main {
       margin: 0;
       padding: 0;
+    }
+    /* This is the line that needs to be fixed */
+    .bg-gray-100 {
+      background-color:#f2f2f2!important;-webkit-print-color-adjust:exact;print-color-adjust:exact
+    }
+    .text-gray-700,.text-gray-800 {
+      color:#000!important
     }
   }
 </style>

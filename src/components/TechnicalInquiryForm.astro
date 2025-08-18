@@ -1,0 +1,150 @@
+---
+---
+
+<div class="container mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">기술 지원 문의</h1>
+
+  <form id="technicalInquiryForm" class="space-y-8 relative">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 hidden">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto mb-4"></div>
+        <p class="text-lg font-semibold text-gray-700">문의 제출 중...</p>
+        <p class="text-sm text-gray-500">잠시만 기다려 주세요.</p>
+      </div>
+    </div>
+
+    <!-- 고객 정보 -->
+    <section class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-2xl font-semibold mb-4">고객 정보</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="companyName" class="block text-sm font-medium text-gray-700">업체명</label>
+          <input type="text" id="companyName" name="companyName" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+          <div id="companyName-error" class="text-red-500 text-xs mt-1 hidden"></div>
+        </div>
+        <div></div>
+        <div>
+          <label for="address" class="block text-sm font-medium text-gray-700">주소</label>
+          <input type="text" id="address" name="address" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+          <div id="address-error" class="text-red-500 text-xs mt-1 hidden"></div>
+        </div>
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">이름</label>
+          <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+          <div id="name-error" class="text-red-500 text-xs mt-1 hidden"></div>
+        </div>
+        <div>
+          <label for="phoneNumber" class="block text-sm font-medium text-gray-700">전화번호</label>
+          <input type="tel" id="phoneNumber" name="phoneNumber" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+          <div id="phoneNumber-error" class="text-red-500 text-xs mt-1 hidden"></div>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">이메일</label>
+          <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+          <div id="email-error" class="text-red-500 text-xs mt-1 hidden"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 문의 내용 -->
+    <section class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-2xl font-semibold mb-4">문의 내용</h2>
+      <div>
+        <label for="inquiryContent" class="block text-sm font-medium text-gray-700">문의 내용을 입력해주세요.</label>
+        <textarea id="inquiryContent" name="inquiryContent" rows="8" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required></textarea>
+        <div id="inquiryContent-error" class="text-red-500 text-xs mt-1 hidden"></div>
+      </div>
+    </section>
+
+    <div class="flex justify-end">
+      <button type="submit" class="px-6 py-3 bg-blue-700 text-white rounded-md text-lg font-semibold hover:bg-blue-800">문의 제출</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('technicalInquiryForm') as HTMLFormElement;
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    // Function to clear all error messages and styles
+    function clearErrors() {
+      document.querySelectorAll('.border-red-500').forEach(el => {
+        el.classList.remove('border-red-500');
+        el.classList.add('border-gray-300');
+      });
+      document.querySelectorAll('.text-red-500').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+      });
+    }
+
+    // Function to display a specific error
+    function showError(inputElement, message) {
+      inputElement.classList.remove('border-gray-300');
+      inputElement.classList.add('border-red-500');
+      const errorDiv = document.getElementById(`${inputElement.id}-error`);
+      if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.classList.remove('hidden');
+      }
+    }
+
+    // Validation function
+    function validateForm() {
+      clearErrors(); // Clear previous errors
+      let isValid = true;
+
+      const requiredFields = ['companyName', 'address', 'name', 'phoneNumber', 'email', 'inquiryContent'];
+      requiredFields.forEach(fieldId => {
+        const input = document.getElementById(fieldId) as HTMLInputElement | HTMLTextAreaElement;
+        if (input && input.value.trim() === '') {
+          showError(input, '필수 입력 항목입니다.');
+          isValid = false;
+        }
+        if (fieldId === 'email' && input && input.value.trim() !== '' && !/^[^S@]+@[^S@]+\.[^S@]+$/.test(input.value)) {
+          showError(input, '유효한 이메일 주소를 입력해주세요.');
+          isValid = false;
+        }
+      });
+
+      return isValid;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!validateForm()) {
+        return; // Stop if validation fails
+      }
+
+      loadingOverlay.classList.remove('hidden'); // Show loading overlay
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/api/submit-technical-inquiry', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams(formData as any).toString(),
+        });
+
+        if (response.redirected || response.status === 302) {
+          window.location.href = response.url;
+        } else if (response.ok) {
+          const result = await response.json();
+          console.log('Submission successful:', result);
+          alert(result.message);
+          loadingOverlay.classList.add('hidden');
+        }
+      } catch (error) {
+        console.error('Error during submission:', error);
+        alert('문의 제출 중 예상치 못한 오류가 발생했습니다.');
+        loadingOverlay.classList.add('hidden');
+      }
+    });
+  });
+</script>

@@ -19,9 +19,11 @@ if (!product) {
   return Astro.redirect('/404');
 }
 
+export const prerender = true;
+
 const { Content } = await product.render();
 ---
-<BaseLayout title={product.data.name} lang="en"> {/* Changed lang */}
+<BaseLayout title={product.data.name} lang="en" image={product.data.heroImage} type="article"> {/* Changed lang */}
   <section class="py-10 mb-10 bg-surface-2 rounded-xl shadow-md">
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
       {product.data.heroImage && (
