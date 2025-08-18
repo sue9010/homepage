@@ -36,7 +36,7 @@ while (params.get(`products[${i}][modelName]`)) {
   <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6">수리 접수 완료</h1>
 
-    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8 print-container">
       <h2 class="text-2xl font-semibold mb-4">접수 내용</h2>
 
       <section class="mb-6">
@@ -50,25 +50,44 @@ while (params.get(`products[${i}][modelName]`)) {
 
       {products.length > 0 && (
         <section>
-          <h3 class="text-xl font-medium mb-2">제품 정보</h3>
-          {products.map((product, index) => (
-            <div class="border border-gray-200 p-4 rounded-md mb-4 last:mb-0">
-              <h4 class="text-lg font-medium mb-2">제품 #{index + 1}</h4>
-              <p><strong>모델명:</strong> {product.modelName || '-'}</p>
-              <p><strong>렌즈 크기:</strong> {product.lensSize || '-'}</p>
-              <p><strong>온도 옵션:</strong> {product.tempOption || '-'}</p>
-              <p><strong>Ge Window 사용 여부:</strong> {product.geWindowToggle || '-'}</p>
-              <p><strong>Ge Window 크기:</strong> {product.geWindowSize || '-'}</p>
-              <p><strong>시리얼 번호:</strong> {product.serialNumber || '-'}</p>
-              <p><strong>구매 시기:</strong> {product.purchaseDate || '-'}</p>
-              <p><strong>증상:</strong> {product.symptoms || '-'}</p>
-            </div>
-          ))}
+          <h3 class="text-xl font-medium mb-4">제품 정보</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-300">
+              <thead class="bg-gray-100">
+                <tr>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">#</th>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">모델명</th>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">렌즈 크기</th>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">온도 옵션</th>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">Ge Window</th>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">Ge Window 크기</th>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">시리얼 번호</th>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">구매 시기</th>
+                  <th class="px-4 py-2 border-b text-left text-sm font-semibold text-gray-700">증상</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((product, index) => (
+                  <tr class="hover:bg-gray-50 border-b">
+                    <td class="px-4 py-2 text-sm text-gray-800">{index + 1}</td>
+                    <td class="px-4 py-2 text-sm text-gray-800">{product.modelName || '-'}</td>
+                    <td class="px-4 py-2 text-sm text-gray-800">{product.lensSize || '-'}</td>
+                    <td class="px-4 py-2 text-sm text-gray-800">{product.tempOption || '-'}</td>
+                    <td class="px-4 py-2 text-sm text-gray-800">{product.geWindowToggle || '-'}</td>
+                    <td class="px-4 py-2 text-sm text-gray-800">{product.geWindowSize || '-'}</td>
+                    <td class="px-4 py-2 text-sm text-gray-800">{product.serialNumber || '-'}</td>
+                    <td class="px-4 py-2 text-sm text-gray-800">{product.purchaseDate || '-'}</td>
+                    <td class="px-4 py-2 text-sm text-gray-800 whitespace-pre-wrap">{product.symptoms || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
       )}
     </div>
 
-    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8" role="alert">
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 no-print" role="alert">
       <p class="font-bold">물품 발송 안내</p>
       <p>이 페이지를 출력하여 물품에 동봉해주십시오.</p>
       <p>접수된 물건은 아래 주소로 보내주시기 바랍니다.</p>
@@ -77,10 +96,76 @@ while (params.get(`products[${i}][modelName]`)) {
       <p><strong>주소:</strong> 서울시 구로구 디지털로 242 한화비즈메트로 1차 810호</p>
     </div>
 
-    <div class="flex justify-end">
+    <div class="flex justify-end no-print">
       <button onclick="window.print()" class="px-6 py-3 bg-blue-600 text-white rounded-md text-lg font-semibold hover:bg-blue-700">
         내용 출력
       </button>
     </div>
   </div>
 </BaseLayout>
+
+<style>
+  @media print {
+    /* Hide elements not needed for printing */
+    .no-print, footer {
+      display: none !important;
+    }
+
+    /* Ensure the main content container uses full width */
+    .container {
+      max-width: 100% !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    .print-container {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        margin: 0 !important;
+    }
+
+    /* General print adjustments */
+    body {
+      font-size: 10pt;
+      color: #000;
+    }
+
+    h1, h2, h3, h4 {
+        color: #000 !important;
+    }
+
+    /* Table specific styles for printing */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+    }
+    
+    thead {
+        background-color: #f2f2f2 !important;
+    }
+
+    th, td {
+      border: 1px solid #ddd !important;
+      padding: 4px;
+      text-align: left;
+      white-space: normal; /* Allow text to wrap */
+      word-break: break-all;
+    }
+    
+    th {
+        font-weight: bold;
+    }
+
+    /* Remove background colors and ensure text is visible */
+    .bg-gray-100 {
+      background-color: #f2f2f2 !important;
+      -webkit-print-color-adjust: exact; /* Chrome, Safari */
+      color-adjust: exact; /* Firefox */
+    }
+    
+    .text-gray-700, .text-gray-800 {
+        color: #000 !important;
+    }
+  }
+</style>
