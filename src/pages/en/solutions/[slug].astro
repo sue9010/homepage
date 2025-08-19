@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
 
-export const prerender = true; // Added this line
+export const prerender = true;
 
 export async function getStaticPaths() {
-  const solutions = await getCollection('solutions', ({data}) => data.lang === 'en');
+  const solutions = await getCollection('solutions', ({ data }) => data.lang === 'en');
   return solutions.map(solution => ({
     params: { slug: solution.slug },
     props: { solution },
@@ -13,13 +14,75 @@ export async function getStaticPaths() {
 }
 
 const { solution } = Astro.props;
+
+if (!solution) {
+  return Astro.redirect('/404');
+}
+
 const { Content } = await solution.render();
 ---
-<BaseLayout title={solution.data.title} lang="en" image={solution.data.coverImage} type="article">
-  <article class="prose lg:prose-xl max-w-none">
-    {solution.data.coverImage && <img src={solution.data.coverImage} alt={solution.data.title} class="rounded-xl" />}
-    <h1>{solution.data.title}</h1>
-    <p class="lead">{solution.data.shortDesc}</p>
-    <Content />
+<BaseLayout title={solution.data.name} lang="en" image={solution.data.heroImage} type="article">
+  <section class="py-10 mb-10 bg-surface-2 rounded-xl shadow-md">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+      {solution.data.heroImage && (
+        <div class="md:w-1/2">
+          <img src={solution.data.heroImage} alt={solution.data.name} class="rounded-lg shadow-lg w-full h-auto object-cover" />
+        </div>
+      )}
+      <div class="md:w-1/2 text-center md:text-left">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-on-surface">{solution.data.name}</h1>
+        <p class="text-xl text-on-surface-variant mb-6 whitespace-pre-wrap">{solution.data.shortDesc}</p>
+        <a href="/en/support" class="inline-flex items-center gap-2 bg-primary text-on-primary font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 text-lg">
+          <Icon name="mdi:email" class="w-6 h-6" />
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <article class="container mx-auto px-4 space-y-10">
+    {solution.data.gallery && solution.data.gallery.length > 0 && (
+      <section>
+        <h2 class="text-3xl font-bold mb-6 text-on-surface">Gallery</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {solution.data.gallery.map(imgSrc => (
+            <img src={imgSrc} alt={`${solution.data.name} gallery image`} class="rounded-lg shadow-sm w-full h-48 object-cover" />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {solution.data.features && (
+      <section>
+        <h2 class="text-3xl font-bold mb-6 text-on-surface">Key Features</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {solution.data.features.map(feature => (
+            <div class="bg-surface-1 p-6 rounded-lg shadow-sm flex flex-col items-center text-center">
+              {feature.icon && <Icon name={feature.icon} class="w-12 h-12 text-primary mb-4" />}
+              <h3 class="text-xl font-bold text-on-surface mb-2">{feature.title}</h3>
+              <p class="text-on-surface-variant">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {solution.data.relatedProducts && solution.data.relatedProducts.length > 0 && (
+      <section>
+        <h2 class="text-3xl font-bold mb-6 text-on-surface">Related Products</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {solution.data.relatedProducts.map(productSlug => (
+            <a href={`/en/products/${productSlug}`} class="flex items-center gap-3 p-4 bg-surface-1 rounded-lg shadow-sm hover:bg-surface-2 transition-colors duration-200">
+              <Icon name="mdi:arrow-right-circle" class="w-6 h-6 text-primary" />
+              <span class="text-lg font-medium text-on-surface">{productSlug}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="prose lg:prose-xl max-w-none text-on-surface">
+      <Content />
+    </section>
   </article>
 </BaseLayout>

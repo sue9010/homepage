@@ -168,7 +168,7 @@ const products = filteredProducts.sort((a,b) => (a.data.order ?? 999) - (b.data.
       ) : (
         products.map(({ slug, data }) => (
           <ProductCard
-            href={`/ko/products/${slug}`}
+            href={`/ko/products/${slug.replace(/^ko\//, '')}`}
             name={data.name}
             mainDesc={data.mainDesc} // Changed from shortDesc
             img={data.heroImage}

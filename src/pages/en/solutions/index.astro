@@ -9,7 +9,7 @@ const solutions = all.sort((a,b) => (a.data.order ?? 999) - (b.data.order ?? 999
   <ul class="space-y-4">
     {solutions.map(({ slug, data }) => (
       <li>
-        <a href={`/en/solutions/${slug}`} class="block p-4 rounded-lg border hover:bg-neutral-50">
+        <a href={`/en/solutions/${slug.replace(/^en\//, '')}`} class="block p-4 rounded-lg border hover:bg-neutral-50">
           <h3 class="font-semibold">{data.title}</h3>
           <p class="text-sm text-neutral-600">{data.shortDesc}</p>
         </a>

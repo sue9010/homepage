@@ -40,13 +40,20 @@ const products = defineCollection({
 const solutions = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
+    name: z.string(), // title -> name 으로 변경하여 통일
     shortDesc: z.string(),
-    coverImage: z.string().optional(),
-    bodyImage: z.array(z.string()).optional(),
-    tags: z.array(z.string()).optional(),
+    heroImage: z.string(), // coverImage -> heroImage 로 변경
+    gallery: z.array(z.string()).optional(),
+    features: z.array( // 'specs'와 유사한 'features' 필드 추가
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        icon: z.string().optional(), // 아이콘 필드 추가
+      })
+    ).optional(),
+    relatedProducts: z.array(z.string()).optional(), // 관련 제품 slug 배열
     order: z.number().optional(),
-    lang: z.enum(['ko','en']).default('ko')
+    lang: z.enum(['ko','en']),
   })
 });
 
