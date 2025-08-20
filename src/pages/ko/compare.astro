@@ -3,34 +3,27 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content'; // Removed getEntry
 
 // 1. Get product slugs from URL query params
-console.log('Compare Page - Astro.url.searchParams:', Astro.url.searchParams);
 const productSlugs = Astro.url.searchParams.get('products');
-console.log('Compare Page - productSlugs (raw):', productSlugs);
 
 const [slug1, slug2] = productSlugs ? productSlugs.split(',') : [];
-
-console.log('Compare Page - slug1:', slug1);
-console.log('Compare Page - slug2:', slug2);
 
 // 2. Fetch the data for the two products using getCollection and filter
 let allProducts = [];
 try {
-  // Fetch all products and clean their slugs
-  allProducts = (await getCollection('products')).map(product => ({
-    ...product,
-    slug: product.slug.replace(/ko$|en$/, '') // Remove .ko or .en suffix
-  }));
-  console.log('Compare Page - All product slugs from collection (cleaned):', allProducts.map(p => p.slug));
+  // Fetch all Korean products and clean their slugs
+  allProducts = (await getCollection('products', ({ data }) => data.lang === 'ko'))
+    .map(product => ({
+      ...product,
+      // The slug from Astro is likely 'cg320ko', so we remove the 'ko' suffix
+      slug: product.slug.replace(/ko$/, '')
+    }));
 } catch (error) {
-  console.error('Compare Page - Error fetching products:', error);
+  // console.error('Compare Page - Error fetching products:', error); // Removed
 }
 
 // 2. Fetch the data for the two products using getCollection and filter
 const product1 = allProducts.find(p => p.slug === slug1);
 const product2 = allProducts.find(p => p.slug === slug2);
-
-console.log('Compare Page - product1:', product1);
-console.log('Compare Page - product2:', product2);
 
 // 3. Create a combined list of specs
 let allSpecs = new Map<string, { product1: string | null; product2: string | null }>();

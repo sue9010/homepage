@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
-import nodemailer from 'nodemailer';
 import { google } from 'googleapis';
+import nodemailer from 'nodemailer';
 
 export const POST: APIRoute = async ({ request }) => {
   let hasError = false;
@@ -36,13 +36,6 @@ export const POST: APIRoute = async ({ request }) => {
 
     console.log('Received repair submission:', formDataObject);
 
-    // Debugging environment variables
-    console.log('SMTP_HOST:', process.env.SMTP_HOST);
-    console.log('SMTP_PORT:', process.env.SMTP_PORT);
-    console.log('SMTP_SECURE:', process.env.SMTP_SECURE);
-    console.log('SMTP_USER:', process.env.SMTP_USER);
-    console.log('GOOGLE_SERVICE_ACCOUNT_EMAIL:', process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL);
-    console.log('GOOGLE_PRIVATE_KEY (first 20 chars):', process.env.GOOGLE_PRIVATE_KEY?.substring(0, 20));
 
     // --- Email Sending Logic ---
     const transporter = nodemailer.createTransport({

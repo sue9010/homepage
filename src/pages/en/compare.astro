@@ -3,19 +3,23 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 // 1. Get product slugs from URL query params
-const { products: productSlugs } = Astro.url.searchParams;
+const productSlugs = Astro.url.searchParams.get('products');
+
 const [slug1, slug2] = productSlugs ? productSlugs.split(',') : [];
+
 
 // 2. Fetch the data for the two products using getCollection and filter
 let allProducts = [];
 try {
-  // Fetch all products and clean their slugs
-  allProducts = (await getCollection('products')).map(product => ({
-    ...product,
-    slug: product.slug.replace(/ko$|en$/, '') // Remove .ko or .en suffix
-  }));
+  // Fetch all English products and clean their slugs
+  allProducts = (await getCollection('products', ({ data }) => data.lang === 'en'))
+    .map(product => ({
+      ...product,
+      // The slug from Astro is likely 'cg320en', so we remove the 'en' suffix
+      slug: product.slug.replace(/en$/, '')
+    }));
 } catch (error) {
-  console.error('Compare Page - Error fetching products:', error);
+  console.error('Compare Page (EN) - Error fetching products:', error);
 }
 
 const product1 = allProducts.find(p => p.slug === slug1);
