@@ -1,0 +1,113 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content'; // Removed getEntry
+
+// 1. Get product slugs from URL query params
+console.log('Compare Page - Astro.url.searchParams:', Astro.url.searchParams);
+const productSlugs = Astro.url.searchParams.get('products');
+console.log('Compare Page - productSlugs (raw):', productSlugs);
+
+const [slug1, slug2] = productSlugs ? productSlugs.split(',') : [];
+
+console.log('Compare Page - slug1:', slug1);
+console.log('Compare Page - slug2:', slug2);
+
+// 2. Fetch the data for the two products using getCollection and filter
+let allProducts = [];
+try {
+  // Fetch all products and clean their slugs
+  allProducts = (await getCollection('products')).map(product => ({
+    ...product,
+    slug: product.slug.replace(/ko$|en$/, '') // Remove .ko or .en suffix
+  }));
+  console.log('Compare Page - All product slugs from collection (cleaned):', allProducts.map(p => p.slug));
+} catch (error) {
+  console.error('Compare Page - Error fetching products:', error);
+}
+
+// 2. Fetch the data for the two products using getCollection and filter
+const product1 = allProducts.find(p => p.slug === slug1);
+const product2 = allProducts.find(p => p.slug === slug2);
+
+console.log('Compare Page - product1:', product1);
+console.log('Compare Page - product2:', product2);
+
+// 3. Create a combined list of specs
+let allSpecs = new Map<string, { product1: string | null; product2: string | null }>();
+
+const addSpecsToMap = (product, productKey) => {
+  if (!product || !product.data.specs) return;
+  let currentSection = '기본 사양';
+  for (const spec of product.data.specs) {
+    if (spec.type === 'section') {
+      currentSection = spec.title;
+    }
+    if (spec.type === 'item') {
+      const key = `${currentSection} - ${spec.key}`;
+      if (!allSpecs.has(key)) {
+        allSpecs.set(key, { product1: null, product2: null });
+      }
+      allSpecs.get(key)[productKey] = spec.value;
+    }
+  }
+};
+
+addSpecsToMap(product1, 'product1');
+addSpecsToMap(product2, 'product2');
+
+const sortedSpecs = Array.from(allSpecs.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<BaseLayout title="제품 비교" lang="ko">
+  <div class="container mx-auto px-4 py-10">
+    <h1 class="text-4xl font-bold mb-8 text-center">제품 비교</h1>
+
+    {product1 && product2 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Product 1 Column -->
+        <div class="border border-outline rounded-lg p-4 flex flex-col items-center">
+          <img src={product1.data.heroImage} alt={product1.data.name} class="w-full max-w-xs rounded-lg mb-4" />
+          <h2 class="text-2xl font-bold text-center">{product1.data.name}</h2>
+          <p class="text-center text-on-surface-variant mt-2">{product1.data.shortDesc}</p>
+        </div>
+
+        <!-- Product 2 Column -->
+        <div class="border border-outline rounded-lg p-4 flex flex-col items-center">
+          <img src={product2.data.heroImage} alt={product2.data.name} class="w-full max-w-xs rounded-lg mb-4" />
+          <h2 class="text-2xl font-bold text-center">{product2.data.name}</h2>
+          <p class="text-center text-on-surface-variant mt-2">{product2.data.shortDesc}</p>
+        </div>
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="mt-12 overflow-x-auto">
+        <table class="w-full border-collapse text-center">
+          <thead>
+            <tr class="bg-surface-2">
+              <th class="p-3 font-semibold border-b border-outline">사양</th>
+              <th class="p-3 font-semibold border-b border-outline">{product1.data.name}</th>
+              <th class="p-3 font-semibold border-b border-outline">{product2.data.name}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedSpecs.map(([key, values]) => {
+              const [section, item] = key.split(' - ');
+              return (
+                <tr class="border-b border-outline hover:bg-surface-2">
+                  <td class="p-3 text-left font-medium text-on-surface-variant">
+                    <span class="font-bold text-sm text-primary-dark">{section}</span><br/>
+                    {item}
+                  </td>
+                  <td class="p-3">{values.product1 || '-'}</td>
+                  <td class="p-3">{values.product2 || '-'}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <p class="text-center text-lg">비교할 제품을 선택해주세요. (2개 필요)</p>
+    )}
+  </div>
+</BaseLayout>

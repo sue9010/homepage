@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCollection, getEntry } from 'astro:content';
-import { Icon } from 'astro-icon/components'; // Import Icon for the button
+
+import { Icon } from 'astro-icon/components';
+
 import { documents } from '@/data/documents'; // Import documents data
 
 export async function getStaticPaths() {

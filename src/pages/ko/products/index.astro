@@ -175,6 +175,7 @@ const products = filteredProducts.sort((a,b) => (a.data.order ?? 999) - (b.data.
             category={data.category}
             resolution={data.resolution}
             sensorSize={data.sensor_size}
+            slug={slug}
           />
         ))
       )}
@@ -183,6 +184,50 @@ const products = filteredProducts.sort((a,b) => (a.data.order ?? 999) - (b.data.
 </BaseLayout>
 
 <script>
+  import { addProductToCompare, compareProducts } from '@/stores/compareStore';
+
+  // This function runs when the page is loaded and every time the compare list changes.
+  function setupCompareButtons() {
+    const products = compareProducts.get();
+    const isFull = products.length >= 2;
+
+    document.querySelectorAll('.add-to-compare-btn').forEach(button => {
+      const slug = (button as HTMLElement).dataset.productSlug;
+      if (!slug) return;
+
+      const isInCompare = products.includes(slug);
+
+      if (isInCompare) {
+        button.textContent = '담겨있음';
+        (button as HTMLButtonElement).disabled = true;
+      } else if (isFull) {
+        button.textContent = '비교함 가득참';
+        (button as HTMLButtonElement).disabled = true;
+      } else {
+        button.textContent = '제품 담기';
+        (button as HTMLButtonElement).disabled = false;
+      }
+    });
+  }
+
+  // Set up the click listeners for the buttons
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('add-to-compare-btn')) {
+      const slug = target.dataset.productSlug;
+      if (slug) {
+        addProductToCompare(slug);
+      }
+    }
+  });
+
+  // Listen for changes in the compare store
+  const unsubscribe = compareProducts.subscribe(setupCompareButtons);
+
+  // Initial setup when the page loads
+  document.addEventListener('DOMContentLoaded', setupCompareButtons);
+
+  // Filter logic
   document.addEventListener('change', (event) => {
     const target = event.target as HTMLInputElement;
     if (target.matches('input[type="checkbox"][name="category"], input[type="checkbox"][name="resolution"], input[type="checkbox"][name="sensor_size"], input[type="checkbox"][name="output"]')) {

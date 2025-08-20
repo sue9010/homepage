@@ -8,6 +8,7 @@ const {
 } = Astro.props;
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import CompareWidget from '@/components/CompareWidget.astro';
 ---
 <html lang={lang}>
   <head>
@@ -32,6 +33,7 @@ import Footer from '@/components/Footer.astro';
       <slot />
     </main>
     <Footer />
+    <CompareWidget />
   </body>
 </html>
 

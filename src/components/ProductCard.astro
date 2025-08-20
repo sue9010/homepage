@@ -1,10 +1,29 @@
 ---
-const { href, name, mainDesc, img, category } = Astro.props;
+const { href, name, mainDesc, img, category, slug } = Astro.props;
 ---
-<a href={href} class="product-card block h-[22rem] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-surface-2 hover:bg-surface-3" data-category={category}>
-  {img && <img src={img} alt={name} class="w-full h-[16rem] object-cover" />}
-  <div class="p-4">
-    <h3 class="font-semibold text-on-surface text-lg mb-1">{name}</h3>
-    {mainDesc && <p class="text-sm text-on-surface-variant whitespace-pre-wrap">{mainDesc}</p>}
+<div class="relative group h-[22rem] rounded-xl overflow-hidden shadow-md" data-category={category}>
+  <!-- Original Card Content -->
+  <a href={href} class="product-card block w-full h-full bg-surface-2">
+    {img && <img src={img} alt={name} class="w-full h-[16rem] object-cover" />}
+    <div class="p-4">
+      <h3 class="font-semibold text-on-surface text-lg mb-1">{name}</h3>
+      {mainDesc && <p class="text-sm text-on-surface-variant whitespace-pre-wrap">{mainDesc}</p>}
+    </div>
+  </a>
+
+  <!-- Hover Overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-center">
+    <div class="flex flex-col gap-4">
+      <a href={href} class="bg-primary text-on-primary font-bold py-2 px-6 rounded-full hover:bg-primary-dark transition-colors">
+        제품 보기
+      </a>
+      <button
+        type="button"
+        class="bg-secondary text-on-secondary font-bold py-2 px-6 rounded-full hover:bg-secondary-dark transition-colors add-to-compare-btn"
+        data-product-slug={slug}
+      >
+        제품 담기
+      </button>
+    </div>
   </div>
-</a>
+</div>

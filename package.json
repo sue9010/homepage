@@ -8,12 +8,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.3",
+    "@astrojs/mdx": "^4.3.4",
     "@astrojs/tailwind": "^6.0.2",
-    "@astrojs/vercel": "^8.0.4",
+    "@astrojs/vercel": "^8.2.6",
     "@iconify-json/mdi": "^1.2.3",
     "@tailwindcss/vite": "^4.1.11",
-    "astro": "^5.12.9",
+    "astro": "^5.13.2",
     "astro-icon": "^1.1.5",
     "dotenv": "^17.2.1",
     "googleapis": "^156.0.0",

@@ -1,0 +1,84 @@
+---
+import { compareProducts, removeProductFromCompare } from '../stores/compareStore';
+---
+
+<div id="compare-widget" class="fixed bottom-4 right-4 w-full max-w-sm p-4 bg-surface-1 rounded-lg shadow-2xl border border-outline z-50 hidden">
+  <h3 class="text-lg font-bold text-on-surface mb-3">제품 비교함</h3>
+  <div id="compare-products-list" class="space-y-2">
+    <!-- Products will be rendered here by JavaScript -->
+  </div>
+  <button
+    id="compare-button"
+    class="w-full mt-4 bg-primary text-on-primary font-bold py-2 px-4 rounded-md disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-primary-dark transition-colors"
+    disabled
+  >
+    비교하기 (0/2)
+  </button>
+</div>
+
+<script>
+  import { compareProducts, removeProductFromCompare } from '../stores/compareStore';
+
+  const widget = document.getElementById('compare-widget');
+  const productList = document.getElementById('compare-products-list');
+  const compareButton = document.getElementById('compare-button');
+
+  function updateWidget() {
+    const products = compareProducts.get();
+
+    if (products.length === 0) {
+      widget.classList.add('hidden');
+      return;
+    } else {
+      widget.classList.remove('hidden');
+    }
+
+    productList.innerHTML = ''; // Clear existing list
+
+    products.forEach(slug => {
+      const productDiv = document.createElement('div');
+      productDiv.className = 'flex items-center justify-between bg-surface-2 p-2 rounded';
+      productDiv.innerHTML = `
+        <span class="text-on-surface-variant font-medium">${slug}</span>
+        <button
+          data-slug="${slug}"
+          class="remove-product-btn text-sm font-semibold text-red-500 hover:text-red-700"
+          aria-label="Remove ${slug} from comparison"
+        >
+          제거
+        </button>
+      `;
+      productList.appendChild(productDiv);
+    });
+
+    // Add event listeners for remove buttons
+    productList.querySelectorAll('.remove-product-btn').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const slugToRemove = (event.target as HTMLElement).dataset.slug;
+        if (slugToRemove) {
+          removeProductFromCompare(slugToRemove);
+        }
+      });
+    });
+
+    const isFull = products.length === 2;
+    compareButton.disabled = !isFull;
+    compareButton.textContent = `비교하기 (${products.length}/2)`;
+
+    if (isFull) {
+      compareButton.onclick = () => {
+        const lang = window.location.pathname.startsWith('/en') ? 'en' : 'ko';
+        const cleanedSlugs = products.map(s => s.replace(/ko$|en$/, '')); // Remove .ko or .en suffix
+        window.location.href = `/${lang}/compare?products=${cleanedSlugs.join(',')}`;
+      };
+    } else {
+      compareButton.onclick = null; // Remove click handler if not full
+    }
+  }
+
+  // Subscribe to store changes
+  compareProducts.subscribe(updateWidget);
+
+  // Initial update on page load
+  updateWidget();
+</script>
