@@ -50,8 +50,10 @@ const links = [
       <a href={base} class="font-bold text-xl flex items-center gap-2">
         <img src="/assets/products/logo/COX LOGO.png" alt="COX Camera Logo" class="h-8" />
       </a>
-      <div class="flex items-center gap-4">
-        <ul class="hidden md:flex items-center gap-8 text-base font-medium">
+      
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-4">
+        <ul class="flex items-center gap-8 text-base font-medium">
           {links.map(link => (
             <li class={link.subLinks ? 'relative group' : ''}>
               {link.subLinks ? (
@@ -80,10 +82,70 @@ const links = [
         <button class="p-2 rounded-full hover:bg-surface-2 transition-colors">
           <Icon name="mdi:magnify" class="w-6 h-6 text-on-surface" />
         </button>
-        <a href={`${base}/support`} class="hidden md:inline-block bg-primary text-on-primary font-semibold py-2 px-5 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
+        <a href={`${base}/support`} class="bg-primary text-on-primary font-semibold py-2 px-5 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300">
           문의하기
         </a>
       </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-button" class="p-2 rounded-md">
+          <Icon name="mdi:menu" class="w-6 h-6" />
+        </button>
+      </div>
     </div>
   </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-white z-50">
+    <div class="flex justify-between items-center p-4 border-b">
+      <a href={base} class="font-bold text-xl flex items-center gap-2">
+        <img src="/assets/products/logo/COX LOGO.png" alt="COX Camera Logo" class="h-8" />
+      </a>
+      <button id="mobile-menu-close-button" class="p-2 rounded-md">
+        <Icon name="mdi:close" class="w-6 h-6" />
+      </button>
+    </div>
+    <ul class="flex flex-col p-4 space-y-4">
+      {links.map(link => (
+        <li>
+          {link.subLinks ? (
+            <div>
+              <span class="font-semibold text-lg flex justify-between items-center">
+                {link.label}
+                <Icon name="mdi:chevron-down" class="w-5 h-5" />
+              </span>
+              <ul class="pl-4 mt-2 space-y-2">
+                {link.subLinks.map(subLink => (
+                  <li>
+                    <a href={subLink.href} class="block py-2 text-on-surface-variant hover:text-primary">
+                      {subLink.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <a href={link.href} class="font-semibold text-lg hover:text-primary">
+              {link.label}
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
 </header>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenuCloseButton = document.getElementById('mobile-menu-close-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileMenuButton.addEventListener('click', () => {
+    mobileMenu.classList.remove('hidden');
+  });
+
+  mobileMenuCloseButton.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden');
+  });
+</script>
