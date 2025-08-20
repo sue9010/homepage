@@ -1,6 +1,9 @@
-## 2025-08-20 (재수정)
 
-- **완료**: 제품 비교 페이지 데이터 조회 오류 재수정
-  - 현상: 이전 수정 이후, 비교 페이지에서 제품 정보를 전혀 불러오지 못하는 문제 발생 (`Please select two products to compare` 메시지 표시)
-  - 원인: `id`를 기준으로 컨텐츠를 필터링하고, `product.slug`를 `replace(\.en$/, '')`와 같이 잘못된 정규식으로 처리하여 URL 파라미터와 슬러그가 불일치함.
-  - 해결: `[slug].astro` 페이지와 동일한 방식으로, MDX frontmatter의 `lang` 속성을 기준으로 컨텐츠를 필터링 (`data.lang === 'en'`). 이후 Astro에서 생성된 슬러그(예: `cg320en`)의 언어 코드만 제거(`replace(/en$/, '')`)하도록 수정하여 문제를 해결함.
+
+## 2025-08-20
+
+- **완료**: Vercel 빌드 오류 수정
+  - 현상: 로컬에서는 정상적으로 빌드되나, Vercel 환경에서만 `Rollup failed to resolve import "nanostores"` 오류가 발생하며 빌드 실패.
+  - 원인: `src/stores/compareStore.ts`에서 `nanostores`를 사용하고 있으나, `package.json`의 의존성 목록(`dependencies`)에 누락됨.
+  - 해결: `package.json` 파일에 `nanostores` 의존성을 직접 추가하여 Vercel 빌드 환경에서도 해당 패키지를 설치하도록 조치함.
+  - 후속 조치(사용자): 로컬에서 `npm install`을 실행하여 `package-lock.json`을 업데이트하고, 변경된 `package.json`과 `package-lock.json`을 커밋/푸시 하도록 안내함.
