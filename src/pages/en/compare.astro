@@ -87,8 +87,7 @@ const sortedSpecs = Array.from(allSpecs.entries()).sort((a, b) => a[0].localeCom
               const [section, item] = key.split(' - ');
               return (
                 <tr class="border-b border-outline hover:bg-surface-2">
-                  <td class="p-3 text-left font-medium text-on-surface-variant">
-                    <span class="font-bold text-sm text-primary-dark">{section}</span><br/>
+                  <td class="p-3 text-left font-bold text-on-surface-variant">
                     {item}
                   </td>
                   <td class="p-3">{values.product1 || '-'}</td>

@@ -1,42 +1,105 @@
 ---
+export interface Props {
+  lang: 'ko' | 'en';
+}
+
+const { lang = 'ko' } = Astro.props;
+
+const t = {
+  ko: {
+    title: "수리 요청",
+    submitting: "수리 요청 제출 중...",
+    pleasewait: "잠시만 기다려 주세요.",
+    customerInfo: "고객 정보",
+    companyName: "업체명",
+    address: "주소",
+    name: "이름",
+    phoneNumber: "전화번호",
+    email: "이메일",
+    productInfo: "제품 정보",
+    addProduct: "제품 추가",
+    submit: "수리 요청 제출",
+    product: "제품",
+    modelName: "모델명",
+    lensSize: "렌즈 크기",
+    useGeWindow: "Ge Window 사용 여부",
+    tempOption: "온도 옵션",
+    selectOption: "선택하세요",
+    geWindowSize: "Ge Window 크기",
+    serialNumber: "시리얼 번호",
+    purchaseDate: "구매 시기 (YYYY-MM)",
+    symptoms: "증상",
+    removeProduct: "제품 삭제",
+    submissionError: "수리 요청 제출 중 오류가 발생했습니다.",
+  },
+  en: {
+    title: "Repair Request",
+    submitting: "Submitting repair request...",
+    pleasewait: "Please wait a moment.",
+    customerInfo: "Customer Information",
+    companyName: "Company Name",
+    address: "Address",
+    name: "Name",
+    phoneNumber: "Phone Number",
+    email: "Email",
+    productInfo: "Product Information",
+    addProduct: "Add Product",
+    submit: "Submit Repair Request",
+    product: "Product",
+    modelName: "Model Name",
+    lensSize: "Lens Size",
+    useGeWindow: "Use Ge Window",
+    tempOption: "Temperature Option",
+    selectOption: "Select an option",
+    geWindowSize: "Ge Window Size",
+    serialNumber: "Serial Number",
+    purchaseDate: "Purchase Date (YYYY-MM)",
+    symptoms: "Symptoms",
+    removeProduct: "Remove Product",
+    submissionError: "An unexpected error occurred during submission.",
+  }
+};
+
+const T = t[lang];
 ---
 
 <div class="container mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-6">수리 요청</h1>
+  <h1 class="text-3xl font-bold mb-6">{T.title}</h1>
 
   <form id="repairForm" class="space-y-8 relative">
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 hidden">
       <div class="text-center">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto mb-4"></div>
-        <p class="text-lg font-semibold text-gray-700">수리 요청 제출 중...</p>
-        <p class="text-sm text-gray-500">잠시만 기다려 주세요.</p>
+        <p class="text-lg font-semibold text-gray-700">{T.submitting}</p>
+        <p class="text-sm text-gray-500">{T.pleasewait}</p>
       </div>
     </div>
 
     <!-- 고객 정보 -->
     <section class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-2xl font-semibold mb-4">고객 정보</h2>
+      <input type="hidden" name="lang" value={lang}>
+      <h2 class="text-2xl font-semibold mb-4">{T.customerInfo}</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label for="companyName" class="block text-sm font-medium text-gray-700">업체명</label>
+          <label for="companyName" class="block text-sm font-medium text-gray-700">{T.companyName}</label>
           <input type="text" id="companyName" name="companyName" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
         </div>
         <div></div>
         <div>
-          <label for="address" class="block text-sm font-medium text-gray-700">주소</label>
+          <label for="address" class="block text-sm font-medium text-gray-700">{T.address}</label>
           <input type="text" id="address" name="address" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
         </div>
         <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">이름</label>
+          <label for="name" class="block text-sm font-medium text-gray-700">{T.name}</label>
           <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
         </div>
         <div>
-          <label for="phoneNumber" class="block text-sm font-medium text-gray-700">전화번호</label>
+          <label for="phoneNumber" class="block text-sm font-medium text-gray-700">{T.phoneNumber}</label>
           <input type="tel" id="phoneNumber" name="phoneNumber" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
         </div>
         <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">이메일</label>
+          <label for="email" class="block text-sm font-medium text-gray-700">{T.email}</label>
           <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
         </div>
       </div>
@@ -44,141 +107,130 @@
 
     <!-- 제품 정보 (반복 가능) -->
     <section id="product-info-section" class="bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-2xl font-semibold mb-4">제품 정보</h2>
+      <h2 class="text-2xl font-semibold mb-4">{T.productInfo}</h2>
       <div id="product-entries" class="space-y-6">
         <!-- Initial product entry will be added by JavaScript or directly here -->
       </div>
-      <button type="button" id="addProductBtn" class="mt-4 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">제품 추가</button>
+      <button type="button" id="addProductBtn" class="mt-4 px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">{T.addProduct}</button>
     </section>
 
     <div class="flex justify-end">
-      <button type="submit" class="px-6 py-3 bg-blue-700 text-white rounded-md text-lg font-semibold hover:bg-blue-800">수리 요청 제출</button>
+      <button type="submit" class="px-6 py-3 bg-blue-700 text-white rounded-md text-lg font-semibold hover:bg-blue-800">{T.submit}</button>
     </div>
   </form>
 </div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const repairForm = document.getElementById('repairForm') as HTMLFormElement;
-    const productEntriesContainer = document.getElementById('product-entries');
-    const addProductBtn = document.getElementById('addProductBtn');
-    let productCount = 0;
+<script is:inline define:vars={{ T }}>
+  const repairForm = document.getElementById('repairForm');
+  const productEntriesContainer = document.getElementById('product-entries');
+  const addProductBtn = document.getElementById('addProductBtn');
+  let productCount = 0;
 
-    function createProductEntry() {
-      productCount++;
-      const entryDiv = document.createElement('div');
-      entryDiv.id = `product-entry-${productCount}`;
-      entryDiv.classList.add('product-entry', 'border', 'border-gray-200', 'p-4', 'rounded-md', 'space-y-4');
+  function createProductEntry() {
+    productCount++;
+    const entryDiv = document.createElement('div');
+    entryDiv.id = `product-entry-${productCount}`;
+    entryDiv.classList.add('product-entry', 'border', 'border-gray-200', 'p-4', 'rounded-md', 'space-y-4');
 
-      entryDiv.innerHTML = `
-        <h3 class="text-xl font-medium mb-2">제품 #${productCount}</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label for="modelName-${productCount}" class="block text-sm font-medium text-gray-700">모델명</label>
-            <input type="text" id="modelName-${productCount}" name="modelName-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-          </div>
-          <div></div>
-          <div>
-            <label for="lensSize-${productCount}" class="block text-sm font-medium text-gray-700">렌즈 크기</label>
-            <input type="text" id="lensSize-${productCount}" name="lensSize-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-          </div>
-          <div class="flex items-center space-x-2">
-            <label for="geWindowToggle-${productCount}" class="text-sm font-medium text-gray-700">Ge Window 사용 여부</label>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" id="geWindowToggle-${productCount}" name="geWindowToggle-${productCount}" class="sr-only peer">
-              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
-          <div>
-            <label for="tempOption-${productCount}" class="block text-sm font-medium text-gray-700">온도 옵션</label>
-            <select id="tempOption-${productCount}" name="tempOption-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-              <option value="">선택하세요</option>
-              <option value="Security">Security (no temperature measurement)</option>
-              <option value="Normal">Normal (-20~120 degree)</option>
-              <option value="Medical1">Medical1 (0~70 degree)</option>
-              <option value="Medical2">Medical2 (20~50 degree)</option>
-              <option value="Medium">Medium (0~300 degree)</option>
-              <option value="High">High (-20~120, 0~500 degree)</option>
-              <option value="Extreme">Extreme (45~1100 degree)</option>
-            </select>
-          </div>
-          <div>
-            <label for="geWindowSize-${productCount}" class="block text-sm font-medium text-gray-700">Ge Window 크기</label>
-            <input type="text" id="geWindowSize-${productCount}" name="geWindowSize-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" disabled>
-          </div>
-          <div>
-            <label for="serialNumber-${productCount}" class="block text-sm font-medium text-gray-700">시리얼 번호</label>
-            <input type="text" id="serialNumber-${productCount}" name="serialNumber-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-          </div>
-          <div>
-            <label for="purchaseDate-${productCount}" class="block text-sm font-medium text-gray-700">구매 시기 (YYYY-MM)</label>
-            <input type="month" id="purchaseDate-${productCount}" name="purchaseDate-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-          </div>
+    entryDiv.innerHTML = `
+      <h3 class="text-xl font-medium mb-2">${T.product} #${productCount}</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="modelName-${productCount}" class="block text-sm font-medium text-gray-700">${T.modelName}</label>
+          <input type="text" id="modelName-${productCount}" name="modelName-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+        </div>
+        <div></div>
+        <div>
+          <label for="lensSize-${productCount}" class="block text-sm font-medium text-gray-700">${T.lensSize}</label>
+          <input type="text" id="lensSize-${productCount}" name="lensSize-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+        </div>
+        <div class="flex items-center space-x-2">
+          <label for="geWindowToggle-${productCount}" class="text-sm font-medium text-gray-700">${T.useGeWindow}</label>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="geWindowToggle-${productCount}" name="geWindowToggle-${productCount}" class="sr-only peer">
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          </label>
         </div>
         <div>
-          <label for="symptoms-${productCount}" class="block text-sm font-medium text-gray-700">증상</label>
-          <textarea id="symptoms-${productCount}" name="symptoms-${productCount}" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+          <label for="tempOption-${productCount}" class="block text-sm font-medium text-gray-700">${T.tempOption}</label>
+          <select id="tempOption-${productCount}" name="tempOption-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            <option value="">${T.selectOption}</option>
+            <option value="Security">Security (no temperature measurement)</option>
+            <option value="Normal">Normal (-20~120 degree)</option>
+            <option value="Medical1">Medical1 (0~70 degree)</option>
+            <option value="Medical2">Medical2 (20~50 degree)</option>
+            <option value="Medium">Medium (0~300 degree)</option>
+            <option value="High">High (-20~120, 0~500 degree)</option>
+            <option value="Extreme">Extreme (45~1100 degree)</option>
+          </select>
         </div>
-        <button type="button" class="remove-product-btn px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">제품 삭제</button>
-      `;
-      productEntriesContainer.appendChild(entryDiv);
+        <div>
+          <label for="geWindowSize-${productCount}" class="block text-sm font-medium text-gray-700">${T.geWindowSize}</label>
+          <input type="text" id="geWindowSize-${productCount}" name="geWindowSize-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" disabled>
+        </div>
+        <div>
+          <label for="serialNumber-${productCount}" class="block text-sm font-medium text-gray-700">${T.serialNumber}</label>
+          <input type="text" id="serialNumber-${productCount}" name="serialNumber-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+        </div>
+        <div>
+          <label for="purchaseDate-${productCount}" class="block text-sm font-medium text-gray-700">${T.purchaseDate}</label>
+          <input type="month" id="purchaseDate-${productCount}" name="purchaseDate-${productCount}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+        </div>
+      </div>
+      <div>
+        <label for="symptoms-${productCount}" class="block text-sm font-medium text-gray-700">${T.symptoms}</label>
+        <textarea id="symptoms-${productCount}" name="symptoms-${productCount}" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+      </div>
+      <button type="button" class="remove-product-btn px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">${T.removeProduct}</button>
+    `;
+    productEntriesContainer.appendChild(entryDiv);
 
-      const geWindowToggle = entryDiv.querySelector(`#geWindowToggle-${productCount}`);
-      const geWindowSizeInput = entryDiv.querySelector(`#geWindowSize-${productCount}`);
-      const removeProductBtn = entryDiv.querySelector('.remove-product-btn');
+    const geWindowToggle = entryDiv.querySelector(`#geWindowToggle-${productCount}`);
+    const geWindowSizeInput = entryDiv.querySelector(`#geWindowSize-${productCount}`);
+    const removeProductBtn = entryDiv.querySelector('.remove-product-btn');
 
-      geWindowToggle.addEventListener('change', () => {
-        geWindowSizeInput.disabled = !geWindowToggle.checked;
-      });
+    geWindowToggle.addEventListener('change', () => {
+      geWindowSizeInput.disabled = !geWindowToggle.checked;
+    });
 
-      removeProductBtn.addEventListener('click', () => {
-        entryDiv.remove();
-      });
-    }
+    removeProductBtn.addEventListener('click', () => {
+      entryDiv.remove();
+    });
+  }
 
-    addProductBtn.addEventListener('click', createProductEntry);
+  addProductBtn.addEventListener('click', createProductEntry);
 
-    // Add initial product entry on page load
-    createProductEntry();
+  createProductEntry();
 
-    repairForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      loadingOverlay.classList.remove('hidden'); // Show loading overlay
-
-      const formData = new FormData(repairForm);
-      // For checkbox, FormData only includes it if checked. Manually add unchecked ones.
-      document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-        if (!(checkbox as HTMLInputElement).checked) {
-          formData.append(checkbox.name, 'off');
-        }
-      });
-
-      try {
-        const response = await fetch('/api/submit-repair', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams(formData as any).toString(),
-        });
-
-        if (response.redirected || response.status === 302) {
-          window.location.href = response.url;
-        } else if (response.ok) {
-          // This path is less likely now with 302 redirect, but keep for robustness
-          const result = await response.json();
-          console.log('Submission successful:', result);
-          alert(result.message);
-          loadingOverlay.classList.add('hidden'); // Hide on non-redirect success
-        }
-        // No else for 302 redirect, as it will navigate away
-      } catch (error) {
-        console.error('Error during submission:', error);
-        alert('An unexpected error occurred during submission.');
-        loadingOverlay.classList.add('hidden'); // Hide on network/unexpected error
+  repairForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    loadingOverlay.classList.remove('hidden');
+    const formData = new FormData(repairForm);
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+      if (!checkbox.checked) {
+        formData.append(checkbox.name, 'off');
       }
     });
+    try {
+      const response = await fetch('/api/submit-repair', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(formData).toString(),
+      });
+      if (response.redirected || response.status === 302) {
+        window.location.href = response.url;
+      } else {
+        const result = await response.json();
+        alert(result.message || 'An unknown error occurred.');
+        loadingOverlay.classList.add('hidden');
+      }
+    } catch (error) {
+      console.error('Error during submission:', error);
+      alert(T.submissionError);
+      loadingOverlay.classList.add('hidden');
+    }
   });
 </script>

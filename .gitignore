@@ -36,3 +36,5 @@ error.txt
 .env
 .vercel/
 .vscode/
+
+task.md

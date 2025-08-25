@@ -1,26 +1,8 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-
-const pageTitle = "Technical Inquiry Submitted";
-
-const url = Astro.url;
-const params = url.searchParams;
-
-const customerInfo = {
-  companyName: params.get('companyName'),
-  name: params.get('name'),
-};
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SubmissionComplete from '../../../components/SubmissionComplete.astro';
 ---
 
-<BaseLayout title={pageTitle} lang="en">
-  <div class="container mx-auto p-6 text-center">
-    <h1 class="text-3xl font-bold mb-4">Your technical inquiry has been successfully submitted.</h1>
-    <p class="text-lg text-gray-700 mb-8">
-      Dear {customerInfo.name || 'Customer'}, your technical inquiry has been received.
-      Our team will review it and get back to you as soon as possible.
-    </p>
-    <a href="/en" class="inline-block bg-blue-600 text-white font-semibold py-3 px-6 rounded-md hover:bg-blue-700 transition-colors">
-      Return to Home
-    </a>
-  </div>
+<BaseLayout pageTitle="Technical Inquiry Complete">
+  <SubmissionComplete lang="en" pageType="technical" />
 </BaseLayout>

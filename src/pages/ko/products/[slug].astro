@@ -73,7 +73,7 @@ const { Content } = await product.render();
                 ) : (
                   <tr class="bg-surface-1 border-b border-surface-3 hover:bg-surface-2">
                     <td class="px-6 py-4 font-medium text-on-surface whitespace-nowrap text-center">{spec.key}</td>
-                    <td class="px-6 py-4 text-center">{spec.value}</td>
+                    <td class="px-6 py-4 text-center whitespace-pre-wrap">{spec.value}</td>
                   </tr>
                 )
               ))}

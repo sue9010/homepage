@@ -1,0 +1,45 @@
+---
+export interface Props {
+  lang: 'ko' | 'en';
+  pageType: 'repair' | 'technical';
+}
+
+const { lang, pageType } = Astro.props;
+
+const t = {
+  ko: {
+    repair: {
+      title: "수리 요청 완료",
+      message: "수리 요청이 성공적으로 접수되었습니다. 빠른 시일 내에 담당자가 연락드리겠습니다.",
+      button: "홈으로 돌아가기",
+    },
+    technical: {
+      title: "기술 문의 완료",
+      message: "기술 문의가 성공적으로 접수되었습니다. 빠른 시일 내에 담당자가 연락드리겠습니다.",
+      button: "홈으로 돌아가기",
+    },
+  },
+  en: {
+    repair: {
+      title: "Repair Request Complete",
+      message: "Your repair request has been successfully submitted. We will contact you shortly.",
+      button: "Back to Home",
+    },
+    technical: {
+      title: "Technical Inquiry Complete",
+      message: "Your technical inquiry has been successfully submitted. We will contact you shortly.",
+      button: "Back to Home",
+    },
+  },
+};
+
+const content = t[lang][pageType];
+---
+
+<div class="container mx-auto max-w-2xl text-center py-16 px-6">
+  <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{content.title}</h1>
+  <p class="text-lg text-gray-600 mb-8">{content.message}</p>
+  <a href={`/${lang}/`} class="bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-800 transition-colors duration-300">
+    {content.button}
+  </a>
+</div>
